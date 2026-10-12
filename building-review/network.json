@@ -1,0 +1,8 @@
+{
+  "equalMinionState": true,
+  "equalAimState": true,
+  "equalProjectiles": true,
+  "observerCannotAct": true,
+  "resumePreservesObserver": true,
+  "finishedUnitsStable": true
+}

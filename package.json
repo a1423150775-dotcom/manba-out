@@ -49,7 +49,10 @@
     "simulate:2.2": "tsx scripts/modes22-simulate.ts",
     "serve": "node scripts/serve.mjs",
     "test:towers": "vitest run src/realtime/towers.test.ts src/realtime/teamMaps.test.ts",
-    "simulate:balance": "tsx scripts/tower-balance.ts"
+    "simulate:balance": "tsx scripts/tower-balance.ts",
+    "test:buildings": "vitest run src/realtime/towers.test.ts src/realtime/minions.test.ts src/realtime/arrowRange.test.ts",
+    "test:buildings:browser": "node scripts/building-browser.mjs",
+    "simulate:buildings": "tsx scripts/building-balance.ts"
   },
   "dependencies": {
     "express": "5.1.0",

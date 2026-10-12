@@ -1,0 +1,10 @@
+{
+  "simulationSeconds": 120,
+  "players": 6,
+  "peakMinions": 12,
+  "meanTickMs": 3.4979617916666803,
+  "p95TickMs": 8.343000000000757,
+  "maxTickMs": 15.808799999999792,
+  "peakArenaJsonBytes": 29492,
+  "note": "Synchronous engine+Bot timing on current machine, not a multi-room load guarantee. Includes static map per snapshot."
+}

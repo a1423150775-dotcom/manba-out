@@ -2,15 +2,23 @@
 
 朋友间的六边形实时卡牌乱斗。React + SVG 2D/2.5D、Node.js/Express、Socket.IO服务器权威判定。支持2～6参战者、真人/Bot、观众、地图编辑器；保留Legacy回合模式。
 
-![MOBA实测](tower-review/moba-2.5D.png)
+![MOBA实测](building-review/moba-minions.png)
 
 ## 模式与技能规则
 
 - 自由乱斗：击杀和助攻计分。
-- MOBA：小型双路、中央换线、双方基地和双塔；摧毁敌方500HP核心获胜，超时比较核心HP。
-- 城堡攻防：蓝方攻城、红方守城；正门、南侧楼梯和北侧破墙路线。核心500HP，城门200HP；蓝方5秒复活、红方8秒复活，超时红方胜。
+- MOBA：小型双路、中央换线、双方基地和双塔；摧毁敌方350HP核心获胜，超时比较核心HP。
+- 城堡攻防：蓝方攻城、红方守城；正门、南侧楼梯和北侧破墙路线。核心350HP，城门200HP；蓝方5秒复活、红方8秒复活，超时红方胜。
 - 五种技能规则独立于地图：固定1、2、3、4技能；或4槽8卡循环。无统一CD，使用能量和前摇限制。
 - 当前公开角色只有牢大：100HP，牢大肘击1.5能量/0.2秒前摇；工程师未加入。现有9张特殊卡和永久普通移动保留。
+
+## 建筑与小兵
+
+- 防御塔250HP：4格索敌、0.3秒前摇、两次发射至少3秒；共享真实低抛箭矢，20伤害，不追踪。
+- 核心350HP：4格索敌、0.8秒前摇、两次发射至少5秒；共享1.7秒火球，中心40/相邻30伤害。
+- 建筑顶部为地板+1；持续瞄准线、拉弓/蓄力和发射动画对参战者与观众同步。优先合法敌方小兵，其次玩家。
+- 小兵300HP、每2秒攻击5HP、每格1秒；不占席位、不使用能量/卡牌，击杀不计玩家积分。MOBA每15秒每队2个，攻城每45秒蓝方1个，交替正门/北翼路线；每队最多6个存活。攻城频率由多轮样本调整，未改小兵HP/伤害。
+- 普通弓箭重新标定为固定初速约6.3格心/秒、重力9.8：同高度目标4格可命中，5格拒绝；高低差由物理求解决定。旧8.75比例已废止。
 
 ## Windows快速启动（源码）
 
@@ -56,9 +64,9 @@ node D:\path\manba-out\scripts\serve.mjs --port 5180
 
 ## 地图编辑器
 
-打开 http://localhost:3000/?mode=editor 。编辑地板、高度、石头、弹簧、核心、塔、门、恢复区、阵营、出生点与兼容模式。支持本地保存、导入/导出JSON、Bot测试。塔射程预览是几何范围，实际射击还需无遮挡。旧自定义地图不覆盖，服务器独立验证上传内容。
+打开 http://localhost:3000/?mode=editor 。编辑地板、高度、石头、弹簧、核心、塔、门、恢复区、阵营、出生点与兼容模式。支持本地保存、导入/导出JSON、Bot测试。支持小兵出生点、兵线路点编辑及JSON保存。塔射程预览是几何范围，实际射击还需无遮挡。旧自定义地图不覆盖，服务器独立验证上传内容。
 
-![城堡编辑器与塔范围](tower-review/editor-hill-castle.png)
+![城堡编辑器与兵线](building-review/editor-hill-castle.png)
 
 ## Windows GUI启动器
 
@@ -95,7 +103,7 @@ npm.cmd run typecheck
 npm.cmd test
 npm.cmd run build
 npm.cmd run test:towers
-npm.cmd run simulate:balance
+npm.cmd run simulate:buildings
 npx.cmd tsx scripts/tower-pressure.ts
 ```
 
@@ -103,7 +111,8 @@ npx.cmd tsx scripts/tower-pressure.ts
 浏览器测试使用已安装的Chrome：
 
 ```powershell
-node .\scripts\tower-browser.mjs
+node .\scripts\building-browser.mjs
+node .\scripts\building-arrow-browser.mjs
 node .\scripts\modes22-network.mjs
 node .\scripts\local-server-smoke.mjs
 ```
@@ -115,14 +124,16 @@ node .\scripts\local-server-smoke.mjs
 ## 目录
 
 - `src/core/`：Legacy规则、地图、卡牌实现及测试。
-- `src/realtime/`：实时状态机、角色/技能、Bot、地图、弹道、塔炮弹。
+- `src/realtime/`：实时状态机、角色/技能、Bot、地图、弹道、建筑攻击、小兵。
 - `src/server/`：Express、Socket.IO、身份/席位/房间管理。
 - `src/web/`：游戏界面、SVG渲染、地图/卡组编辑器。
 - `scripts/`：构建、开服、测试、Bot模拟和公开前扫描。
 - `launcher-win/`：WinForms及SakuraFrp桥接源码。
 - `portable/`：便携启动/安全停止工具、无密钥默认配置、Node许可证。
-- `tower-review/`：本轮截图和不含令牌的测量结果。
-- `TOWER_MAP_REPORT.md`：改动、根因、测试和平衡限制。
+- `building-review/`、`building-arrow-review/`：当前轮次实测截图与汇总。
+- `tower-review/`：上一轮塔炮弹方案的历史验收，已被当前弓箭/火球方案取代。
+- `BUILDING_MINION_REPORT.md`：当前轮次改动、参数、测试和平衡限制。
+- `TOWER_MAP_REPORT.md`：上一轮历史报告。
 
 ## 常见故障
 
@@ -138,6 +149,6 @@ node .\scripts\local-server-smoke.mjs
 
 ## 本轮部署验收与依赖审计
 
-已从GitHub重新Clone，使用空npm缓存安装、构建、334项测试，以及Chrome真人/Bot/观众双模式短局均通过；GUI构建脚本和便携开服/停止链路通过。GUI按钮受桌面激活失败限制未实测。详见`tower-review/clean-clone.json`。
+上一轮已从GitHub重新Clone，使用空npm缓存安装、构建、334项测试，以及Chrome真人/Bot/观众双模式短局均通过；GUI构建脚本和便携开服/停止链路通过。GUI按钮受桌面激活失败限制未实测。详见`tower-review/clean-clone.json`。
 
 开发依赖已更新Vite6.4.4、concurrently9.2.5、Vitest3.2.7。生产依赖审计0项；Vitest工具链仍有3条开发依赖告警（2critical、1moderate），需要跨主版本升级，本轮没有强制升级。不要公开开发/测试服务器。

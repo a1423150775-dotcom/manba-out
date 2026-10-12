@@ -24,3 +24,14 @@ data/control.json
 .agents/
 .vs/
 .npm-*-cache/
+
+!building-review/
+building-review/*
+!building-review/*.png
+!building-review/*.json
+building-review/failure*
+!building-arrow-review/
+building-arrow-review/*
+!building-arrow-review/*.png
+!building-arrow-review/*.json
+building-arrow-review/failure*

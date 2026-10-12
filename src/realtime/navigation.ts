@@ -5,7 +5,7 @@ import {moveHeight} from './space';
 import type {Arena,Fighter} from './engine';
 export type Navigation={kind:'point'|'follow';at?:Hex;targetId?:string;path:Hex[];nextPlan:number;blockedSince?:number;status:string};
 export type NavigationRequest={kind:'step';at:Hex}|{kind:'point';at:Hex}|{kind:'follow';targetId:string}|{kind:'stop'};
-const blocked=(g:Arena,p:Fighter,h:Hex)=>g.objects.some(o=>o.kind!=='mine'&&equal(o.at,h))||g.players.some(t=>t.id!==p.id&&t.position&&equal(t.position,h));
+const blocked=(g:Arena,p:Fighter,h:Hex)=>g.objects.some(o=>o.kind!=='mine'&&equal(o.at,h))||[...g.players,...(g.minions||[])].some(t=>t.id!==p.id&&t.position&&equal(t.position,h));
 // Bounded Dijkstra: at most 217 map cells; mine cells are costly, never impassable.
 export function findPath(g:Arena,p:Fighter,target:Hex,adjacent=false):Hex[]|null{
  if(!p.position)return null;const queue=[{at:p.position,path:[] as Hex[],cost:0}],best=new Map([[key(p.position),0]]);
@@ -47,7 +47,7 @@ export function tickNavigation(g:Arena,move:Move){for(const p of g.players){
  if(p.pendingStep){const pending=p.pendingStep;if(!p.position||g.phase!=='playing'||g.now>pending.expires){p.pendingStep=null;p.navigationNotice='待移动操作已取消';}else if(!p.movement){const r=singleStep(g,p,pending.at,move);if(!r.ok)p.navigationNotice=r.reason;}}
  const nav=p.navigation;if(!nav)continue;
  if(!p.position||g.phase!=='playing'){p.navigation=null;p.navigationNotice='自动移动已取消：角色死亡或比赛结束';continue;}
- const target=nav.kind==='follow'?g.players.find(t=>t.id===nav.targetId)?.position:nav.at;if(!target){if(p.movement?.skill==='move'){p.movement=null;p.moveRecoveryUntil=g.now+RT_CONFIG.moveRecoveryMs;}p.navigation=null;p.navigationNotice='跟随已取消：目标死亡或离开';continue;}
+ const target=nav.kind==='follow'?[...g.players,...(g.minions||[])].find(t=>t.id===nav.targetId)?.position:nav.at;if(!target){if(p.movement?.skill==='move'){p.movement=null;p.moveRecoveryUntil=g.now+RT_CONFIG.moveRecoveryMs;}p.navigation=null;p.navigationNotice='跟随已取消：目标死亡或离开';continue;}
  if(p.stunnedUntil>g.now||p.forced||p.carriedBy){nav.status='控制中，稍后继续';continue;}
  if(p.action||p.movement)continue;if(p.energy+1e-9<1){nav.status='等待能量恢复';continue;}if(g.now<nav.nextPlan)continue;nav.nextPlan=g.now+500;
  const path=findPath(g,p,target,nav.kind==='follow'||g.players.some(t=>t.id!==p.id&&t.position&&equal(t.position,target)));nav.path=path||[];

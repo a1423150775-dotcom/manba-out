@@ -3,7 +3,8 @@ import type {Mode,Team} from './modes';
 import {board,DIRS,scale,clockwiseDirection,distance,key,equal,type Hex} from '../core/hex';
 import {CONFIG} from '../core/config';
 export type MapBuilding={id:string;kind:'core'|'tower'|'gate';team:Team;at:Hex};
-export type ArenaMap={version:1;supportedModes?:Mode[];buildings?:MapBuilding[];healing?:{team:Team;at:Hex}[];id:string;name:string;description:string;floors:(Hex & {height?:number})[];spawns:{number:number;at:Hex;team?:Team}[];springs:{at:Hex;direction:number}[];obstacles:Hex[]};
+export type MinionLane={team:Team;spawn:Hex;waypoints:Hex[];targetTeam:Team};
+export type ArenaMap={version:1;minionLanes?:MinionLane[];supportedModes?:Mode[];buildings?:MapBuilding[];healing?:{team:Team;at:Hex}[];id:string;name:string;description:string;floors:(Hex & {height?:number})[];spawns:{number:number;at:Hex;team?:Team}[];springs:{at:Hex;direction:number}[];obstacles:Hex[]};
 export const MAP_LIMITS={radius:8,minFloors:12,maxFloors:217,maxBytes:60000};
 const classic:ArenaMap={version:1,id:'classic',name:'中心竞技场',description:'半径6的开放竞技场；保留六座原有弹簧，外围加入少量石头与弹簧。按击杀与助攻计分。',floors:board(6),spawns:DIRS.map((d,i)=>({number:i+1,at:scale(d,5)})),springs:[...DIRS.map((d,i)=>({at:scale(d,3),direction:clockwiseDirection((i+3)%6)})),...[0,2,4].map(i=>({at:{q:DIRS[i].q*4+DIRS[(i+1)%6].q,r:DIRS[i].r*4+DIRS[(i+1)%6].r},direction:clockwiseDirection((i+3)%6)}))],obstacles:DIRS.map((d,i)=>({q:d.q*4+DIRS[(i+1)%6].q*2,r:d.r*4+DIRS[(i+1)%6].r*2}))};
 export const BUILTIN_MAPS:ArenaMap[]=[classic,
@@ -15,7 +16,7 @@ function record(v:unknown,keys:string[]){if(!v||typeof v!=='object'||Array.isArr
 function hex(v:unknown):Hex{const p=record(v,['q','r']);if(!Number.isSafeInteger(p.q)||!Number.isSafeInteger(p.r)||distance(p as Hex)>MAP_LIMITS.radius)fail('坐标必须是半径8以内的整数轴坐标');return{q:p.q as number,r:p.r as number};}
 function list(v:unknown,max:number){if(!Array.isArray(v)||v.length>max)fail('集合格式或数量超限');return v as unknown[];}
 export function validateMap(value:unknown,players=2):ArenaMap{
- if(JSON.stringify(value)?.length>MAP_LIMITS.maxBytes)fail('JSON过大');const p=record(value,['version','id','name','description','floors','spawns','springs','obstacles','supportedModes','buildings','healing']);
+ if(JSON.stringify(value)?.length>MAP_LIMITS.maxBytes)fail('JSON过大');const p=record(value,['version','id','name','description','floors','spawns','springs','obstacles','supportedModes','buildings','healing','minionLanes']);
  if(p.version!==1)fail('不支持此版本');if(typeof p.id!=='string'||! /^[a-zA-Z0-9_-]{1,48}$/.test(p.id))fail('ID需1～48个英文字母、数字、短横线或下划线');
  if(typeof p.name!=='string'||!p.name.trim()||p.name.length>40||typeof p.description!=='string'||p.description.length>240)fail('名称或描述长度错误');
  const seen=new Set<string>();
@@ -31,6 +32,7 @@ export function validateMap(value:unknown,players=2):ArenaMap{
  if(buildings&&new Set(buildings.map(b=>b.id)).size!==buildings.length)fail('建筑ID重复');
  const healing=p.healing===undefined?undefined:list(p.healing,24).map(value=>{const v=record(value,['team','at']),at=hex(v.at);if(!['blue','red'].includes(String(v.team))||!cells.has(key(at))||buildings?.some(b=>equal(b.at,at))||obstacles.some(h=>equal(h,at)))fail('恢复地板无效');return{team:v.team as Team,at};});
  if(healing&&new Set(healing.map(h=>key(h.at))).size!==healing.length)fail('恢复地板重复');
+ const minionLanes=p.minionLanes===undefined?undefined:list(p.minionLanes,8).map(value=>{const v=record(value,['team','spawn','waypoints','targetTeam']),spawn=hex(v.spawn),waypoints=list(v.waypoints,24).map(hex);if(!['blue','red'].includes(String(v.team))||!['blue','red'].includes(String(v.targetTeam))||v.team===v.targetTeam||![spawn,...waypoints].every(h=>cells.has(key(h))))fail('小兵路线无效');return{team:v.team as Team,targetTeam:v.targetTeam as Team,spawn,waypoints};});
  for(const mode of supportedModes||[])if(mode!=='ffa'){
   if(!['blue','red'].every(team=>spawns.some(s=>s.team===team)))fail('组队地图需要双方出生区域');
   const cores=buildings?.filter(b=>b.kind==='core')||[];
@@ -39,7 +41,7 @@ export function validateMap(value:unknown,players=2):ArenaMap{
   // Potential routes may traverse destructible objects, but never climb a cliff.
   for(const core of cores){const seen=new Set<string>(),queue=spawns.filter(s=>s.team!==core.team).map(s=>s.at);while(queue.length){const h=queue.shift()!;if(seen.has(key(h)))continue;seen.add(key(h));for(const d of DIRS){const n={q:h.q+d.q,r:h.r+d.r};const a=floors.find(f=>equal(f,h))?.height||0,b=floors.find(f=>equal(f,n))?.height||0;if(cells.has(key(n))&&!seen.has(key(n))&&(Math.abs(a-b)<=.5||a-b>=1))queue.push(n);}}if(!seen.has(key(core.at)))fail('敌方无法到达核心所在区域');}
  }
- return {version:1,...(supportedModes?{supportedModes}:{}),...(buildings?{buildings}:{}),...(healing?{healing}:{}),id:p.id as string,name:(p.name as string).trim(),description:p.description as string,floors,spawns,springs,obstacles};
+ return {version:1,...(minionLanes?{minionLanes}:{}),...(supportedModes?{supportedModes}:{}),...(buildings?{buildings}:{}),...(healing?{healing}:{}),id:p.id as string,name:(p.name as string).trim(),description:p.description as string,floors,spawns,springs,obstacles};
 }
 export const hasFloor=(map:ArenaMap,h:Hex)=>map.floors.some(at=>equal(at,h));
 export function chooseMap(id:unknown){const found=BUILTIN_MAPS.find(m=>m.id===id);if(!found)fail('地图不存在');return validateMap(found);}

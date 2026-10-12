@@ -1,5 +1,5 @@
 export const CARD_PROTOCOL=7;
-export const RT_CONFIG={tickMs:50,moveDamage:5,appleHp:30,appleEnergy:4,moveRecoveryMs:200,broadcastMs:100,maxEnergy:10,initialEnergy:5,regenPerSecond:1.1,regenMs:1000/1.1,respawnMs:5000,matchMs:180000,resourceMs:15000,killScore:2,assistScore:1,assistMs:5000,chainLimit:32,chargeMs:900,chargeSteps:3,chargeSide:5,coverDecay:2,mineDecay:2,fireFlightMs:1700,hookMs:400,gravity:9.8,arrowSpeed:3.5/Math.sqrt(1.4/9.8),bodyRadius:.28,obstacleRadius:.48,bodyHeight:1,mineHeight:.1,launchHeight:.7,maxStep:.5,maxObjects:128,maxProjectiles:128};
+export const RT_CONFIG={tickMs:50,moveDamage:5,appleHp:30,appleEnergy:4,moveRecoveryMs:200,broadcastMs:100,maxEnergy:10,initialEnergy:5,regenPerSecond:1.1,regenMs:1000/1.1,respawnMs:5000,matchMs:180000,resourceMs:15000,killScore:2,assistScore:1,assistMs:5000,chainLimit:32,chargeMs:900,chargeSteps:3,chargeSide:5,coverDecay:2,mineDecay:2,fireFlightMs:1700,hookMs:400,gravity:9.8,arrowSpeed:Math.sqrt(4.05*9.8),bodyRadius:.28,obstacleRadius:.48,bodyHeight:1,mineHeight:.1,launchHeight:.7,maxStep:.5,maxObjects:128,maxProjectiles:128};
 // Exact 2.1 card parameters supersede 2.0 damage/movement/resistance modifiers; HP retained.
 export const CHARACTERS={
 laoda:{name:'牢大',hp:100,moveScale:1,regenScale:1,damageScale:1,resistance:0,elbowDamage:0,description:'100生命 · 肘击仅1.5能量，0.2秒前摇'},
@@ -28,3 +28,6 @@ export function migrateDeck(v:unknown):SkillId[]|null{if(!Array.isArray(v)||v.le
 // Historical character definitions remain for old simulation fixtures; only this registry is playable.
 export const PLAYABLE_CHARACTERS={laoda:CHARACTERS.laoda};
 export const characterSkill=(character:CharacterId,id:SkillId):Skill=>character==='laoda'&&id==='elbow'?{...SKILLS.elbow,energyCost:1.5,windup:200,description:'牢大专长：1.5能量，0.2秒前摇；相邻目标30伤害、击退1格、击晕1.2秒'}:SKILLS[id];
+
+// Adapter extension point; existing playable characters retain multiplier 1.
+export const characterArrowSpeed=(character:CharacterId)=>RT_CONFIG.arrowSpeed*((CHARACTERS[character] as {arrowSpeedScale?:number}).arrowSpeedScale??1);

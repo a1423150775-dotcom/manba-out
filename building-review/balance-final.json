@@ -1,0 +1,1184 @@
+{
+  "reports": [
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "核心被摧毁",
+      "seconds": 437,
+      "kills": 3,
+      "actions": 771,
+      "towerShots": 350,
+      "towerHits": 336,
+      "towerDamage": 6526,
+      "coreShots": 101,
+      "coreDamage": 4350.5,
+      "towerMinionShots": 334,
+      "towerPlayerShots": 16,
+      "coreMinionShots": 86,
+      "corePlayerShots": 15,
+      "minionSpawns": 77,
+      "minionDeaths": 65,
+      "minionBuildingDamage": 1145,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 199000
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 233000
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 393250
+        },
+        {
+          "id": "map:blue-core",
+          "kind": "core",
+          "at": 437000
+        }
+      ],
+      "pathFailures": 10,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 350
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 10,
+      "actions": 2029,
+      "towerShots": 269,
+      "towerHits": 250,
+      "towerDamage": 4841.5,
+      "coreShots": 168,
+      "coreDamage": 6630.5,
+      "towerMinionShots": 234,
+      "towerPlayerShots": 35,
+      "coreMinionShots": 138,
+      "corePlayerShots": 30,
+      "minionSpawns": 106,
+      "minionDeaths": 94,
+      "minionBuildingDamage": 1055,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 192250
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 205500
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 215550
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 276000
+        }
+      ],
+      "pathFailures": 17,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 135
+        },
+        {
+          "team": "red",
+          "hp": 100
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 29,
+      "actions": 2989,
+      "towerShots": 327,
+      "towerHits": 313,
+      "towerDamage": 6130,
+      "coreShots": 166,
+      "coreDamage": 6362,
+      "towerMinionShots": 278,
+      "towerPlayerShots": 49,
+      "coreMinionShots": 120,
+      "corePlayerShots": 46,
+      "minionSpawns": 99,
+      "minionDeaths": 87,
+      "minionBuildingDamage": 690,
+      "destroyed": [
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 192250
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 216200
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 314000
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 341500
+        }
+      ],
+      "pathFailures": 17,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 230
+        },
+        {
+          "team": "red",
+          "hp": 40
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 6,
+      "actions": 1016,
+      "towerShots": 388,
+      "towerHits": 375,
+      "towerDamage": 7310,
+      "coreShots": 162,
+      "coreDamage": 7462.5,
+      "towerMinionShots": 354,
+      "towerPlayerShots": 34,
+      "coreMinionShots": 137,
+      "corePlayerShots": 25,
+      "minionSpawns": 110,
+      "minionDeaths": 99,
+      "minionBuildingDamage": 1295,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 302150
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 369250
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 370100
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 391300
+        }
+      ],
+      "pathFailures": 10,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 85
+        },
+        {
+          "team": "red",
+          "hp": 5
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 7,
+      "actions": 2036,
+      "towerShots": 309,
+      "towerHits": 295,
+      "towerDamage": 5754.5,
+      "coreShots": 169,
+      "coreDamage": 5961,
+      "towerMinionShots": 271,
+      "towerPlayerShots": 38,
+      "coreMinionShots": 140,
+      "corePlayerShots": 29,
+      "minionSpawns": 109,
+      "minionDeaths": 97,
+      "minionBuildingDamage": 715,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 193000
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 243000
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 285700
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 289500
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 135
+        },
+        {
+          "team": "red",
+          "hp": 175
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 16,
+      "actions": 3042,
+      "towerShots": 315,
+      "towerHits": 294,
+      "towerDamage": 5755,
+      "coreShots": 175,
+      "coreDamage": 6645,
+      "towerMinionShots": 277,
+      "towerPlayerShots": 38,
+      "coreMinionShots": 148,
+      "corePlayerShots": 27,
+      "minionSpawns": 118,
+      "minionDeaths": 106,
+      "minionBuildingDamage": 925,
+      "destroyed": [
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 193000
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 206300
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 295100
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 370000
+        }
+      ],
+      "pathFailures": 10,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 150
+        },
+        {
+          "team": "red",
+          "hp": 65
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "核心被摧毁",
+      "seconds": 343.25,
+      "kills": 1,
+      "actions": 581,
+      "towerShots": 186,
+      "towerHits": 179,
+      "towerDamage": 3505,
+      "coreShots": 107,
+      "coreDamage": 4505,
+      "towerMinionShots": 164,
+      "towerPlayerShots": 22,
+      "coreMinionShots": 95,
+      "corePlayerShots": 12,
+      "minionSpawns": 56,
+      "minionDeaths": 49,
+      "minionBuildingDamage": 1245,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 118300
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 153250
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 168000
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 239500
+        },
+        {
+          "id": "map:blue-core",
+          "kind": "core",
+          "at": 343250
+        }
+      ],
+      "pathFailures": 8,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 220
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 16,
+      "actions": 2036,
+      "towerShots": 311,
+      "towerHits": 287,
+      "towerDamage": 5590,
+      "coreShots": 167,
+      "coreDamage": 5591.5,
+      "towerMinionShots": 272,
+      "towerPlayerShots": 39,
+      "coreMinionShots": 118,
+      "corePlayerShots": 49,
+      "minionSpawns": 99,
+      "minionDeaths": 87,
+      "minionBuildingDamage": 650,
+      "destroyed": [
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 207350
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 229600
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 236850
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 367750
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 120
+        },
+        {
+          "team": "red",
+          "hp": 210
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 20,
+      "actions": 3060,
+      "towerShots": 249,
+      "towerHits": 228,
+      "towerDamage": 4475,
+      "coreShots": 191,
+      "coreDamage": 7454,
+      "towerMinionShots": 217,
+      "towerPlayerShots": 32,
+      "coreMinionShots": 171,
+      "corePlayerShots": 20,
+      "minionSpawns": 117,
+      "minionDeaths": 105,
+      "minionBuildingDamage": 910,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 133500
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 151300
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 250000
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 285350
+        }
+      ],
+      "pathFailures": 19,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 115
+        },
+        {
+          "team": "red",
+          "hp": 160
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 276.7,
+      "kills": 6,
+      "actions": 451,
+      "towerShots": 21,
+      "towerHits": 18,
+      "towerDamage": 360,
+      "coreShots": 39,
+      "coreDamage": 1299.5,
+      "towerMinionShots": 6,
+      "towerPlayerShots": 15,
+      "coreMinionShots": 27,
+      "corePlayerShots": 12,
+      "minionSpawns": 6,
+      "minionDeaths": 5,
+      "minionBuildingDamage": 250,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 21150
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 124300
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 276700
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 5,
+      "actions": 474,
+      "towerShots": 36,
+      "towerHits": 34,
+      "towerDamage": 680,
+      "coreShots": 48,
+      "coreDamage": 1519.5,
+      "towerMinionShots": 17,
+      "towerPlayerShots": 19,
+      "coreMinionShots": 29,
+      "corePlayerShots": 19,
+      "minionSpawns": 6,
+      "minionDeaths": 5,
+      "minionBuildingDamage": 295,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 45750
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 159200
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 90
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 5,
+      "actions": 489,
+      "towerShots": 29,
+      "towerHits": 26,
+      "towerDamage": 515,
+      "coreShots": 45,
+      "coreDamage": 1432,
+      "towerMinionShots": 13,
+      "towerPlayerShots": 16,
+      "coreMinionShots": 32,
+      "corePlayerShots": 13,
+      "minionSpawns": 6,
+      "minionDeaths": 5,
+      "minionBuildingDamage": 260,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 33800
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 140000
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 60
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 257.7,
+      "kills": 6,
+      "actions": 822,
+      "towerShots": 43,
+      "towerHits": 32,
+      "towerDamage": 621.5,
+      "coreShots": 44,
+      "coreDamage": 1481,
+      "towerMinionShots": 10,
+      "towerPlayerShots": 33,
+      "coreMinionShots": 22,
+      "corePlayerShots": 22,
+      "minionSpawns": 5,
+      "minionDeaths": 4,
+      "minionBuildingDamage": 155,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 20350
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 144000
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 257700
+        }
+      ],
+      "pathFailures": 1,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 272.85,
+      "kills": 11,
+      "actions": 865,
+      "towerShots": 35,
+      "towerHits": 27,
+      "towerDamage": 530,
+      "coreShots": 47,
+      "coreDamage": 1461,
+      "towerMinionShots": 10,
+      "towerPlayerShots": 25,
+      "coreMinionShots": 25,
+      "corePlayerShots": 22,
+      "minionSpawns": 6,
+      "minionDeaths": 5,
+      "minionBuildingDamage": 185,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 50700
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 133800
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 272850
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 103,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 239,
+      "kills": 7,
+      "actions": 756,
+      "towerShots": 37,
+      "towerHits": 27,
+      "towerDamage": 530,
+      "coreShots": 42,
+      "coreDamage": 1733.5,
+      "towerMinionShots": 8,
+      "towerPlayerShots": 29,
+      "coreMinionShots": 22,
+      "corePlayerShots": 20,
+      "minionSpawns": 5,
+      "minionDeaths": 4,
+      "minionBuildingDamage": 180,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 20350
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 125350
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 239000
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 252,
+      "kills": 24,
+      "actions": 1156,
+      "towerShots": 52,
+      "towerHits": 44,
+      "towerDamage": 849,
+      "coreShots": 43,
+      "coreDamage": 1715,
+      "towerMinionShots": 18,
+      "towerPlayerShots": 34,
+      "coreMinionShots": 22,
+      "corePlayerShots": 21,
+      "minionSpawns": 5,
+      "minionDeaths": 4,
+      "minionBuildingDamage": 175,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 33850
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 169850
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 252000
+        }
+      ],
+      "pathFailures": 10,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 218.25,
+      "kills": 19,
+      "actions": 1014,
+      "towerShots": 40,
+      "towerHits": 32,
+      "towerDamage": 625,
+      "coreShots": 40,
+      "coreDamage": 1638.5,
+      "towerMinionShots": 12,
+      "towerPlayerShots": 28,
+      "coreMinionShots": 18,
+      "corePlayerShots": 22,
+      "minionSpawns": 4,
+      "minionDeaths": 3,
+      "minionBuildingDamage": 115,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 30100
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 135100
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 218250
+        }
+      ],
+      "pathFailures": 5,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 26,
+      "actions": 1403,
+      "towerShots": 47,
+      "towerHits": 37,
+      "towerDamage": 725,
+      "coreShots": 55,
+      "coreDamage": 1601.5,
+      "towerMinionShots": 11,
+      "towerPlayerShots": 36,
+      "coreMinionShots": 26,
+      "corePlayerShots": 29,
+      "minionSpawns": 6,
+      "minionDeaths": 5,
+      "minionBuildingDamage": 150,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 48800
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 154950
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 180
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 176.3,
+      "kills": 11,
+      "actions": 677,
+      "towerShots": 33,
+      "towerHits": 30,
+      "towerDamage": 575,
+      "coreShots": 32,
+      "coreDamage": 1233,
+      "towerMinionShots": 6,
+      "towerPlayerShots": 27,
+      "coreMinionShots": 11,
+      "corePlayerShots": 21,
+      "minionSpawns": 3,
+      "minionDeaths": 3,
+      "minionBuildingDamage": 85,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 24600
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 111450
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 176300
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 207.65,
+      "kills": 16,
+      "actions": 809,
+      "towerShots": 40,
+      "towerHits": 36,
+      "towerDamage": 690,
+      "coreShots": 38,
+      "coreDamage": 1612.5,
+      "towerMinionShots": 8,
+      "towerPlayerShots": 32,
+      "coreMinionShots": 17,
+      "corePlayerShots": 21,
+      "minionSpawns": 4,
+      "minionDeaths": 3,
+      "minionBuildingDamage": 170,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 43050
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 131400
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 207650
+        }
+      ],
+      "pathFailures": 5,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 103,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 199.2,
+      "kills": 10,
+      "actions": 790,
+      "towerShots": 35,
+      "towerHits": 25,
+      "towerDamage": 487,
+      "coreShots": 36,
+      "coreDamage": 1165.5,
+      "towerMinionShots": 8,
+      "towerPlayerShots": 27,
+      "coreMinionShots": 19,
+      "corePlayerShots": 17,
+      "minionSpawns": 4,
+      "minionDeaths": 3,
+      "minionBuildingDamage": 200,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 28400
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 124150
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 199200
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": []
+    }
+  ],
+  "travel": [
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "center",
+      "steps": 6,
+      "minMoveSeconds": 6,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "core",
+      "steps": 11,
+      "minMoveSeconds": 11,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "tower",
+      "steps": 9,
+      "minMoveSeconds": 9,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "center",
+      "steps": 6,
+      "minMoveSeconds": 6,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "core",
+      "steps": 11,
+      "minMoveSeconds": 11,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "tower",
+      "steps": 9,
+      "minMoveSeconds": 9,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "center",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "core",
+      "steps": 9,
+      "minMoveSeconds": 9,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "gate",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "tower",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "red",
+      "target": "center",
+      "steps": 6,
+      "minMoveSeconds": 6,
+      "includesCombat": false
+    }
+  ],
+  "note": "Final21 seeded matches: MOBA15s2/team; siege45s1/blue, inner tower(2,1). Earlier iterations retained separately.",
+  "elapsedMs": [
+    113663.58989999999,
+    113565.7794,
+    100730.1578
+  ]
+}

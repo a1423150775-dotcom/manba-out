@@ -8,8 +8,8 @@ export const elevation=(map:ArenaMap,h:Hex)=>map.floors.find(f=>key(f)===key(h))
 export const stepHeight=(map:ArenaMap,a:Hex,b:Hex)=>Math.abs(elevation(map,a)-elevation(map,b))<=C.maxStep;
 export const moveHeight=(map:ArenaMap,a:Hex,b:Hex)=>stepHeight(map,a,b)||elevation(map,a)-elevation(map,b)>=1;
 export const positionAt=(shot:Ballistic,t:number):Vec=>({x:shot.origin.x+shot.velocity.x*t,y:shot.origin.y+shot.velocity.y*t,z:shot.origin.z+shot.velocity.z*t-(shot.gravity??C.gravity)*t*t/2});
-export function trajectories(origin:Vec,target:Vec):Ballistic[]{
- const dx=target.x-origin.x,dy=target.y-origin.y,d=Math.hypot(dx,dy),z=target.z-origin.z,v=C.arrowSpeed,g=C.gravity;
+export function trajectories(origin:Vec,target:Vec,speed=C.arrowSpeed):Ballistic[]{
+ const dx=target.x-origin.x,dy=target.y-origin.y,d=Math.hypot(dx,dy),z=target.z-origin.z,v=speed,g=C.gravity;
  if(![...Object.values(origin),...Object.values(target),d].every(Number.isFinite)||d<1e-6)return[];const raw=v**4-g*(g*d*d+2*z*v*v);if(raw < -1e-9)return[];const disc=Math.max(0,raw);
  return [...new Set([Math.atan((v*v-Math.sqrt(disc))/(g*d)),Math.atan((v*v+Math.sqrt(disc))/(g*d))])].map(angle=>({origin:{...origin},velocity:{x:dx/d*v*Math.cos(angle),y:dy/d*v*Math.cos(angle),z:v*Math.sin(angle)}}));
 }

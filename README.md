@@ -1,3 +1,5 @@
+> 当前实时开发版本：Elbow Mayhem 2.1。九卡、连续能量、前摇与独立效果、高度碰撞规则以 [2.1交付与规则说明](./RELEASE_2_1.md) 为准。下文保留此前版本与Legacy说明，数值冲突时请按所选模式区分。
+
 ## 全屏HUD、多地图与地图编辑器（2026-10-11）
 
 最新开发服务：http://localhost:5180/?mode=realtime 。地图编辑器：http://localhost:5180/?mode=editor 。5173仍是独立旧便携包；本次未更新发行ZIP、Windows启动器或SakuraFrp。

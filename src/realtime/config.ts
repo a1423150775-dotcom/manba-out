@@ -1,27 +1,26 @@
-export const CARD_PROTOCOL = 3;
-export const RT_CONFIG = { tickMs: 50, broadcastMs: 100, maxEnergy: 10, initialEnergy: 5, regenMs: 3000, respawnMs: 5000, matchMs: 180000, scoreMs: 10000, resourceMs: 15000, springMs: 20000, killScore: 2, chainLimit: 8 };
-export const CHARACTERS = {
-  laoda: { name: '牢大', hp: 100, moveScale: 1, regenScale: 1, damageScale: 1, resistance: 0, elbowDamage: 5, description: '近战控制：牢大肘击额外造成5伤害' },
-  tank: { name: '铁头哥', hp: 140, moveScale: 1.3, regenScale: 1, damageScale: 1, resistance: 1, elbowDamage: 0, description: '坦克：敌方直接击退减少1格，移动慢30%；机关弹射不减免' },
-  mouse: { name: '闪电鼠', hp: 75, moveScale: .7, regenScale: 1, damageScale: 1, resistance: 0, elbowDamage: 0, description: '高机动：移动、冲刺快30%，生命较少' },
-} as const;
-export type CharacterId = keyof typeof CHARACTERS;
-export type Skill = { name: string; description: string; energyCost: number; windup: number; recovery: number; targetType: 'cell' | 'player' | 'direction' | 'self'; range: number; effect: 'move' | 'hit' | 'heal' | 'blink' | 'area' | 'spring'; damage?: number; push?: number; stun?: number; heal?: number; steps?: number };
-export const SKILLS = {
-  move: { name: '普通移动', description: '相邻1格，1秒完成，50%时切换逻辑格', energyCost: 1, windup: 500, recovery: 500, targetType: 'cell', range: 1, effect: 'move', steps: 1 },
-  elbow: { name: '牢大肘击', description: '前摇0.3秒；相邻目标15伤害、推2格、晕1秒；可预判目标', energyCost: 3, windup: 300, recovery: 0, targetType: 'player', range: 1, effect: 'hit', damage: 15, push: 2, stun: 1000 },
-  dash: { name: '冲刺', description: '沿方向移动2格，0.6秒；每段50%切格，受阻停止', energyCost: 2, windup: 150, recovery: 450, targetType: 'direction', range: 2, effect: 'move', steps: 2 },
-  heal: { name: '治疗', description: '前摇1秒，恢复25 HP', energyCost: 3, windup: 1000, recovery: 0, targetType: 'self', range: 0, effect: 'heal', heal: 25 },
-  heavy: { name: '重击', description: '前摇0.8秒，相邻目标30伤害，击退1格', energyCost: 4, windup: 800, recovery: 0, targetType: 'player', range: 1, effect: 'hit', damage: 30, push: 1 },
-  blink: { name: '闪现', description: '前摇0.5秒，传送到3格内空地', energyCost: 4, windup: 500, recovery: 0, targetType: 'cell', range: 3, effect: 'blink' },
-  area: { name: '范围肘击', description: '前摇0.7秒，周围1格敌人各受10伤害、击退1格', energyCost: 5, windup: 700, recovery: 0, targetType: 'self', range: 1, effect: 'area', damage: 10, push: 1 },
-  spring: { name: '放置弹簧', description: '前摇0.6秒，相邻空格放置20秒弹簧；推2格，最多2个', energyCost: 3, windup: 600, recovery: 0, targetType: 'cell', range: 1, effect: 'spring' },
-} satisfies Record<string, Skill>;
-export type SkillId = keyof typeof SKILLS;
-export const DEFAULT_DECK: SkillId[] = ['elbow', 'dash', 'heal', 'heavy', 'blink', 'area', 'spring', 'elbow'];
-export const validDeck = (value: unknown): value is SkillId[] => Array.isArray(value) && value.length === 8 && value.every(id => typeof id === 'string' && id !== 'move' && Object.hasOwn(SKILLS, id));
-
-export function migrateDeck(value:unknown):SkillId[]|null {
- if(!Array.isArray(value)||value.length!==8||!value.every(id=>typeof id==='string'&&Object.hasOwn(SKILLS,id)))return null;
- return value.map((id,i)=>id==='move'?DEFAULT_DECK[i]:id) as SkillId[];
-}
+export const CARD_PROTOCOL=4;
+export const RT_CONFIG={tickMs:50,broadcastMs:100,maxEnergy:10,initialEnergy:5,regenPerSecond:1.1,regenMs:1000/1.1,respawnMs:5000,matchMs:180000,resourceMs:15000,killScore:2,assistScore:1,assistMs:5000,chainLimit:32,chargeMs:900,chargeSteps:3,chargeSide:5,mineDecay:2,fireFlightMs:500,hookMs:400,gravity:9.8,arrowSpeed:3.5/Math.sqrt(1.4/9.8),bodyRadius:.28,obstacleRadius:.48,bodyHeight:1,mineHeight:.1,launchHeight:.7,maxStep:.5,maxObjects:128,maxProjectiles:128};
+// Exact 2.1 card parameters supersede 2.0 damage/movement/resistance modifiers; HP retained.
+export const CHARACTERS={
+laoda:{name:'牢大',hp:100,moveScale:1,regenScale:1,damageScale:1,resistance:0,elbowDamage:0,description:'均衡角色 · 100生命'},
+tank:{name:'铁头哥',hp:140,moveScale:1,regenScale:1,damageScale:1,resistance:0,elbowDamage:0,description:'重装角色 · 140生命；2.1统一移动与击退'},
+mouse:{name:'闪电鼠',hp:75,moveScale:1,regenScale:1,damageScale:1,resistance:0,elbowDamage:0,description:'轻型角色 · 75生命；2.1统一移动速度'},} as const;
+export type CharacterId=keyof typeof CHARACTERS;
+export type Skill={name:string;description:string;energyCost:number;windup:number;recovery:number;targetType:'cell'|'player'|'direction';range:number;effect:string;damage?:number;push?:number;stun?:number;motion?:boolean};
+export const SKILLS={
+move:{name:'普通移动',description:'1能量，1秒移动相邻格，50%切格；上下高度差最多0.5',energyCost:1,windup:0,recovery:1000,targetType:'cell',range:1,effect:'move',motion:true},
+elbow:{name:'牢大肘击',description:'0.3秒前摇，相邻目标20伤害、击退2格、击晕1秒；可攻击障碍',energyCost:2,windup:300,recovery:0,targetType:'player',range:1,effect:'hit',damage:20,push:2,stun:1000},
+charge:{name:'大运',description:'0.6秒前摇，0.9秒冲锋3格；撞击10伤害/晕0.5秒，结束向顺时针60°甩飞',energyCost:3,windup:600,recovery:0,targetType:'direction',range:3,effect:'charge',motion:true},
+fireball:{name:'火球',description:'2秒前摇，0.5秒飞行；中心40、相邻30伤害，包含自己和障碍',energyCost:4,windup:2000,recovery:0,targetType:'cell',range:4,effect:'fireball'},
+blink:{name:'闪现',description:'0.5秒前摇，瞬移至1～3格合法落点；忽略路径障碍',energyCost:2,windup:500,recovery:0,targetType:'cell',range:3,effect:'blink',motion:true},
+cover:{name:'速凝掩体',description:'0.5秒前摇，1～2格放置三连墙，每格10HP；全体合法才生成',energyCost:2,windup:500,recovery:0,targetType:'cell',range:2,effect:'cover'},
+mine:{name:'地雷',description:'0.5秒前摇，1～2格放置10HP地雷；每秒失去2HP，踩踏或归零爆炸50/10伤害',energyCost:3,windup:500,recovery:0,targetType:'cell',range:2,effect:'mine'},
+hook:{name:'钩锁',description:'0.5秒前摇，1～3格无遮挡目标5伤害、晕1秒，0.4秒拉至面前',energyCost:3,windup:500,recovery:0,targetType:'player',range:3,effect:'hook',damage:5,stun:1000},
+basic:{name:'平A',description:'0.3秒前摇，相邻玩家或障碍20伤害，无控制',energyCost:1,windup:300,recovery:0,targetType:'player',range:1,effect:'hit',damage:20},
+arrow:{name:'弓箭',description:'0.7秒前摇，固定初速抛体；首个有效目标30伤害，可切换高低弹道，不命中地雷',energyCost:2,windup:700,recovery:0,targetType:'cell',range:16,effect:'arrow'},
+} satisfies Record<string,Skill>;
+export type SkillId=keyof typeof SKILLS;
+export const DEFAULT_DECK:SkillId[]=['elbow','fireball','blink','arrow','charge','cover','mine','hook'];
+export const validDeck=(v:unknown):v is SkillId[]=>Array.isArray(v)&&v.length===8&&v.every(x=>typeof x==='string'&&x!=='move'&&Object.hasOwn(SKILLS,x));
+const old:Record<string,SkillId>={dash:'charge',heal:'mine',heavy:'basic',area:'fireball',spring:'cover'};
+export function migrateDeck(v:unknown):SkillId[]|null{if(!Array.isArray(v)||v.length!==8||!v.every(x=>typeof x==='string'&&(Object.hasOwn(SKILLS,x)||Object.hasOwn(old,x))))return null;return v.map((x,i)=>x==='move'?DEFAULT_DECK[i]:old[x]||x) as SkillId[];}

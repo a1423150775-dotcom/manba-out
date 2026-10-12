@@ -18,7 +18,7 @@ export function installRealtime(io:Server){
   const addBot=(room:Room,character:CharacterId='laoda',difficulty:Difficulty='normal')=>{
     if(room.seats.filter(s=>!s.observer).length>=6)throw new Error('真人和Bot合计最多6名');
     let n=1;while(room.seats.some(s=>s.name===`电脑牢大${n}`))n++;
-    const seat:Seat={id:id(),token:'',socketId:null,name:`电脑牢大${n}`,color:colors[room.seats.filter(s=>!s.observer).length%6],character,deck:[...DEFAULT_DECK],bot:difficulty,observer:false};
+    const seat:Seat={id:id(),token:'',socketId:null,name:`电脑牢大${n}`,color:colors[room.seats.filter(s=>!s.observer).length%6],character,deck:DEFAULT_DECK.map((card,i)=>i===7&&n%2===0?'basic':card),bot:difficulty,observer:false};
     if(room.seats.filter(s=>!s.observer).length>=room.map.spawns.length)throw new Error('地图出生点不足');
     if(room.game?.phase==='playing')addFighter(room.game,seat);room.seats.push(seat);
   };
@@ -64,9 +64,9 @@ export function installRealtime(io:Server){
       if(room.cache.size>=8192)throw new Error('本局请求上限已达');
       const result=callback(room,seat);room.cache.set(key,result);broadcast(room);return result;
     };
-    command('skill',input=>{if(input?.cardProtocol!==CARD_PROTOCOL)return{ok:false,reason:'页面版本已过期，请刷新页面后重新选择卡牌',code:'CLIENT_VERSION'};return dedup(input,(room,seat)=>(()=>{if(input.intent?.kind==='move')return requestMovement(room.game!,seat.id,input.intent.at);const p=room.game!.players.find(p=>p.id===seat.id);const slot=input.intent?.slot;if(!Number.isInteger(slot)||slot<0||slot>3||!p)return{ok:false,reason:'请选择当前手牌槽位'};return useHandCard(room.game!,seat.id,{slot,instanceId:input.intent.instanceId,targetId:input.intent.targetId,at:input.intent.at,direction:input.intent.direction});})());});
+    command('skill',input=>{if(input?.cardProtocol!==CARD_PROTOCOL)return{ok:false,reason:'页面版本已过期，请刷新页面后重新选择卡牌',code:'CLIENT_VERSION'};return dedup(input,(room,seat)=>(()=>{if(input.intent?.kind==='move')return requestMovement(room.game!,seat.id,input.intent.at);const p=room.game!.players.find(p=>p.id===seat.id);const slot=input.intent?.slot;if(!Number.isInteger(slot)||slot<0||slot>3||!p)return{ok:false,reason:'请选择当前手牌槽位'};return useHandCard(room.game!,seat.id,{slot,instanceId:input.intent.instanceId,targetId:input.intent.targetId,at:input.intent.at,direction:input.intent.direction,arc:input.intent.arc,auto:input.intent.auto});})());});
     command('buy',input=>dedup(input,(room,seat)=>buyResource(room.game!,seat.id,input.item)));
-    command('finish',()=>{const{room}=authorized(true);if(!room.test||!room.game)throw new Error('仅测试房主可提前结束');room.game.phase='finished';for(const p of room.game.players)p.action=null;log(room.game,'测试房主结束对局');broadcast(room);});
+    command('finish',()=>{const{room}=authorized(true);if(!room.test||!room.game)throw new Error('仅测试房主可提前结束');room.game.phase='finished';for(const p of room.game.players){p.action=null;p.movement=null;p.forced=null;}log(room.game,'测试房主结束对局');broadcast(room);});
     command('leave',()=>{const{room,seat}=authorized();if(seat.id===room.hostId){rooms.delete(room.code);for(const s of room.seats)if(s.socketId){const peer=ns.sockets.get(s.socketId);if(peer){peer.emit('closed');delete peer.data.rtCode;delete peer.data.rtId;}}}else{if(room.game?.phase==='playing')throw new Error('比赛进行中，关闭页面会保留身份');room.seats=room.seats.filter(s=>s!==seat);delete socket.data.rtCode;delete socket.data.rtId;broadcast(room);}return{ok:true};});
     socket.on('disconnect',()=>{const o=own(socket);if(o){o.seat.socketId=null;broadcast(o.room);}});
   });

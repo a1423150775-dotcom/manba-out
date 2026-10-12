@@ -1,7 +1,7 @@
-import {createGame} from '../core/game';
+import {createGame} from '../../core/game';
 import {it,expect} from 'vitest';
 import {createArena,startSkill,advanceArena,stun} from './engine';
-import {DIRS,add,scale} from '../core/hex';
+import {DIRS,add,scale} from '../../core/hex';
 import {validDeck,DEFAULT_DECK,type SkillId} from './config';
 const game=(deck:SkillId[]=[...DEFAULT_DECK])=>{const g=createArena([{id:'a',name:'a',color:'red',deck},{id:'b',name:'b',color:'blue'},{id:'c',name:'c',color:'green'}]);g.springs=[];g.boxes=[];g.players[0].position={q:0,r:0};g.players[1].position={q:1,r:0};g.players[2].position={q:-4,r:0};g.players[0].energy=10;return g;};
 it('exactly eight, duplicates allowed, no forced movement',()=>{expect(validDeck(Array(8).fill('heal'))).toBe(true);for(const n of [0,4,7,9])expect(validDeck(Array(n).fill('move'))).toBe(false);expect(validDeck([...DEFAULT_DECK.slice(1),'fake'])).toBe(false);});

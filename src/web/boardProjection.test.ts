@@ -2,7 +2,7 @@ import {it,expect} from 'vitest';
 import {boardProjection} from './boardProjection';
 import {DIRS,add} from '../core/hex';
 import {BUILTIN_MAPS,validateMap} from '../realtime/maps';
-import {createArena,requestMovement,advanceArena,push} from '../realtime/engine';
+import {createArena,requestMovement,advanceArena,push} from '../realtime/v20/engine';
 it('height is validated visual metadata, optional and JSON stable',()=>{
  const m=structuredClone(BUILTIN_MAPS[0]);m.floors[0].height=2;
  expect(validateMap(JSON.parse(JSON.stringify(m)))).toEqual(m);

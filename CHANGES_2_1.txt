@@ -1,0 +1,39 @@
+M	GAME_RULES.md
+M	KNOWN_ISSUES.md
+M	README.md
+A	RELEASE_2_1.md
+M	TEST_REPORT.md
+M	TODO.md
+M	package-lock.json
+M	package.json
+A	scripts/combat21-browser.mjs
+A	scripts/combat21-editor-browser.mjs
+A	scripts/combat21-network.mjs
+A	scripts/combat21-nine-browser.mjs
+M	src/realtime/bots.ts
+A	src/realtime/combat21.test.ts
+M	src/realtime/config.ts
+M	src/realtime/engine.ts
+M	src/realtime/maps.ts
+A	src/realtime/regression21.test.ts
+A	src/realtime/space.test.ts
+A	src/realtime/space.ts
+A	src/realtime/v20/bots.ts
+A	src/realtime/v20/config.ts
+R097	src/realtime/cycle.test.ts	src/realtime/v20/cycle.test.ts
+R100	src/realtime/default-movement.test.ts	src/realtime/v20/default-movement.test.ts
+R100	src/realtime/engine.test.ts	src/realtime/v20/engine.test.ts
+A	src/realtime/v20/engine.ts
+R100	src/realtime/hand-request.test.ts	src/realtime/v20/hand-request.test.ts
+R100	src/realtime/interactions.test.ts	src/realtime/v20/interactions.test.ts
+R097	src/realtime/maps.test.ts	src/realtime/v20/maps.test.ts
+A	src/realtime/v20/maps.ts
+R100	src/realtime/skills.test.ts	src/realtime/v20/skills.test.ts
+M	src/server/realtime.ts
+A	src/web/BattleEffects.tsx
+M	src/web/MapEditor.tsx
+M	src/web/RealtimeApp.tsx
+A	src/web/RealtimeArt.tsx
+M	src/web/RealtimeBoard.tsx
+M	src/web/RealtimeDeckEditor.tsx
+M	src/web/boardProjection.test.ts

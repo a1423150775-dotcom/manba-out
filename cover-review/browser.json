@@ -1,0 +1,17 @@
+{
+  "results": [
+    "full: authoritative 3 units, one hand cycle",
+    "fireball actual flight/explosion destroyed all 3 cover units",
+    "bot: authoritative 2 units, one hand cycle",
+    "stone: authoritative 2 units, one hand cycle",
+    "edge: authoritative 1 units, one hand cycle",
+    "blocked: authoritative 0 units, one hand cycle",
+    "mine preserved at center; its real explosion destroyed both side walls",
+    "charge broke 3 consecutive walls and reached third cell",
+    "mobile touch three-step deployment, natural expiry, then actual movement onto former wall",
+    "Space and 5-second timeout clear pending cover selection on mobile",
+    "QQ retains manual center/axis, 2D/2.5D follow projection, menu interaction renews expiry, ESC costs nothing",
+    "live Bot battle resumes using authoritative actions"
+  ],
+  "errors": []
+}

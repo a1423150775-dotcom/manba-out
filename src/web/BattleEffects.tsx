@@ -1,3 +1,4 @@
+import {coverCells,coverCellReason} from '../realtime/cover';
 import {RT_CONFIG} from '../realtime/config';
 import {RealtimeArt} from './RealtimeArt';
 import type {Arena} from '../realtime/engine';
@@ -6,7 +7,7 @@ import {positionAt,world,elevation} from '../realtime/space';
 import {DIRS,add,type Hex} from '../core/hex';
 export function GroundWarnings({game,style}:{game:Arena;style:RenderStyle}){const p=boardProjection(style,game.map.floors);return <g pointerEvents="none">
  {game.players.map(f=>f.action?.skill==='fireball'&&f.action.at&&<polygon key={f.id} data-warning="fireball" points={p.polygon(f.action.at)} fill="#f2883e" fillOpacity=".35" stroke="#dc6239" strokeWidth="4" strokeDasharray="6 4"/>)}
- {game.players.flatMap(f=>f.action?.skill==='cover'&&f.action.at?[f.action.at,add(f.action.at,DIRS[f.action.direction!]),add(f.action.at,DIRS[(f.action.direction!+3)%6])].map((h,i)=><polygon key={f.id+i} points={p.polygon(h)} fill="#a8c5d6" fillOpacity=".4" stroke="#426e8c" strokeWidth="3"/>):[])}
+ {game.players.flatMap(f=>f.action?.skill==='cover'&&f.action.at?coverCells(f.action.at,f.action.direction!).map((h,i)=><polygon key={f.id+i} points={p.polygon(h)} fill={coverCellReason(game,h)?'#e66c72':'#a8c5d6'} fillOpacity=".4" stroke="#426e8c" strokeWidth="3"/>):[])}
  </g>;}
 export function ObjectModels({game,style,time}:{game:Arena;style:RenderStyle;time:number}){const project=boardProjection(style,game.map.floors);return <g data-layer="objects">{[...game.objects].sort((a,b)=>a.at.r-b.at.r).map(o=>{const p=project.point(o.at),rise=style==='2.5d'?Math.min(1,(time-o.created)/250)*22*o.height:0;return <g key={o.id} data-object={o.id} data-kind={o.kind} data-hp={o.hp.toFixed(2)} data-cell={`${o.at.q},${o.at.r}`} transform={`translate(${p.x} ${p.y})`}>
  {o.kind==='mine'?<><ellipse cy="3" rx="19" ry={style==='2.5d'?8:18} fill="#6b835f" stroke="#283d41" strokeWidth="3"/><circle cy={-rise} r="8" fill="#e56842"/><path d="M-20 0H-13M13 0H20M0-20V-13" stroke="#ecb950" strokeWidth="3"/></>:<><path d={`M-25 -12L0 -24L25 -12V12L0 24L-25 12Z`} fill={o.kind==='stone'?'#657887':'#93acb5'} stroke="#324b5a" strokeWidth="3"/>{style==='2.5d'&&<path d={`M-25 ${-12-rise}L0 ${-rise}L25 ${-12-rise}V12L0 24L-25 12Z`} fill={o.kind==='stone'?'#657887':'#93acb5'} stroke="#324b5a" strokeWidth="2"/>}<path d={`M-25 ${-12-rise}L0 ${-24-rise}L25 ${-12-rise}L0 ${-rise}Z`} fill={o.kind==='stone'?'#b4c4cc':'#d3dedc'} stroke="#324b5a" strokeWidth="2"/>{o.hp<o.maxHp&&<path d={`M-7 ${-16-rise}L4 -3L-6 9L3 18`} fill="none" stroke="#253d4c" strokeWidth="3"/>}</>}

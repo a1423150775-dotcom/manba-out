@@ -1,0 +1,8 @@
+{
+  "simultaneous": true,
+  "duplicateChargedOnce": true,
+  "uniqueWalls": 3,
+  "nonHost": true,
+  "reconnect": true,
+  "expirationSynced": true
+}

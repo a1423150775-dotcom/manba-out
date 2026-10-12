@@ -1,3 +1,4 @@
+import {coverCells,coverCellReason} from './cover';
 import {tickNavigation,type Navigation} from './navigation';
 import {DIRS,add,distance,equal,key,scale,type Hex} from '../core/hex';
 import {BUILTIN_MAPS,validateMap,hasFloor,type ArenaMap} from './maps';
@@ -109,14 +110,14 @@ export function startSkill(g:Arena,id:string,intent:Intent):{ok:boolean;reason?:
  if(intent.arc!==undefined&&!['low','high'].includes(intent.arc))return fail('弹道选择无效');
  if(intent.skill==='move'&&!canStep(g,p.position,intent.at!))return fail('目标有障碍或高度差超过0.5');
  if((intent.skill==='fireball'||intent.skill==='arrow')&&g.projectiles.length>=C.maxProjectiles)return fail('场上投射物已达上限');
- if((intent.skill==='cover'||intent.skill==='mine')&&g.objects.length+3>C.maxObjects)return fail('场上物体已达上限');
+ if((intent.skill==='cover'&&g.objects.length>=C.maxObjects)||(intent.skill==='mine'&&g.objects.length+3>C.maxObjects))return fail('场上物体已达上限');
  const shots=intent.skill==='arrow'?arrowOptions(g,p,intent.at!):[],shot=shots[intent.arc==='high'?1:0];if(intent.skill==='arrow'&&!shot)return fail(shots.length?'所选弓箭弹道不可用':'目标超出弓箭射程');
  if(replaceAutoMove)p.movement=null;
  const a:ActiveAction={...intent,at:intent.at?{q:intent.at.q,r:intent.at.r}:undefined,seq:++g.seq,start:g.now,hitAt:g.now+skill.windup,end:g.now+skill.windup,from:{...p.position},path:[],step:0,resolved:false,shot};
  p.energy=Number((p.energy-skill.energyCost).toFixed(6));if(intent.skill!=='move'){const used=p.hand[slot];p.hand[slot]=p.queue.shift()!;p.queue.push(used);}if(intent.skill==='move'){p.moveRecoveryUntil=0;p.movement={...a,path:[a.at!],end:g.now+1000,hitAt:g.now+500};}else p.action=a;g.actionsStarted++;return{ok:true};
 }
 function resolve(g:Arena,p:Fighter,a:ActiveAction){
- if(!p.position)return;const skill:Skill=SKILLS[a.skill];let success=false;const at=a.at;
+ if(!p.position)return;const skill:Skill=SKILLS[a.skill];let success=false;let deploymentReason:string|undefined;const at=a.at;
  if(skill.effect==='hit'){
  const target=g.players.find(t=>t.id===a.targetId&&t.position),object=g.objects.find(o=>o.id===a.targetId),targetAt=target?.position||object?.at;
  if(targetAt&&distance(p.position,targetAt)===1&&Math.abs(elevation(g.map,p.position)-elevation(g.map,targetAt))<=1){visual(g,a.skill,targetAt,p.position);if(object)damageObject(g,object,skill.damage!,p.id);else if(target){const dir=DIRS.findIndex(d=>equal(add(p.position!,d),targetAt));damage(g,target,skill.damage!,p.id);if(target.position&&skill.stun)stun(g,target,skill.stun);if(target.position&&skill.push&&dir>=0)push(g,target,dir,skill.push,{source:p.id,used:new Set(),count:0});}success=true;}
@@ -125,10 +126,18 @@ function resolve(g:Arena,p:Fighter,a:ActiveAction){
  }else if(a.skill==='fireball'&&g.projectiles.length<C.maxProjectiles&&at&&distance(p.position,at)<=4&&hasFloor(g.map,at)){
  const origin={...world(p.position),z:elevation(g.map,p.position)+.7},target={...world(at),z:elevation(g.map,at)},t=C.fireFlightMs/1000;g.projectiles.push({id:'fire'+a.seq,kind:'fireball',owner:p.id,start:g.now,end:g.now+C.fireFlightMs,at,from:{...p.position},origin,velocity:{x:(target.x-origin.x)/t,y:(target.y-origin.y)/t,z:(target.z-origin.z+C.gravity*t*t/2)/t}});success=true;
  }else if(a.skill==='arrow'&&g.projectiles.length<C.maxProjectiles&&at){const shots=arrowOptions(g,p,at),shot=shots[a.arc==='high'?1:0];if(shot){g.projectiles.push({...shot,id:'arrow'+a.seq,kind:'arrow',owner:p.id,start:g.now,end:g.now+10000,at,from:{...p.position}});success=true;}
- }else if(a.skill==='cover'&&at&&distance(p.position,at)<=2){const cells=[add(at,DIRS[a.direction!]),at,add(at,DIRS[(a.direction!+3)%6])];if(g.objects.length+3<=C.maxObjects&&cells.every(h=>free(g,h)&&!g.springs.some(s=>equal(s.at,h))&&!g.objects.some(o=>equal(o.at,h)))){for(const h of cells){g.objects.push({id:'wall'+(++g.seq),kind:'cover',at:h,hp:SKILLS.cover.objectHp,maxHp:SKILLS.cover.objectHp,height:1,owner:p.id,created:g.now});visual(g,'build',h);}g.obstacles=g.objects.filter(o=>o.kind!=='mine').map(o=>o.at);success=true;}
+ }else if(a.skill==='cover'&&at){
+ const placed:Hex[]=[],skipped:string[]=[];
+ for(const h of coverCells(at,a.direction!)){
+  const reason=coverCellReason(g,h)||(g.objects.length>=C.maxObjects?'场上物体已达上限':null);
+  if(reason){skipped.push(reason);continue;}
+  g.objects.push({id:'wall'+(++g.seq),kind:'cover',at:h,hp:SKILLS.cover.objectHp,maxHp:SKILLS.cover.objectHp,height:1,owner:p.id,created:g.now});placed.push(h);visual(g,'build',h);
+ }
+ g.obstacles=g.objects.filter(o=>o.kind!=='mine').map(o=>o.at);success=placed.length>0;
+ deploymentReason=success?'速凝掩体：已部署'+placed.length+'/3格'+(skipped.length?'（跳过：'+[...new Set(skipped)].join('、')+'）':''):'部署失败：没有可放置的格子';
  }else if(a.skill==='mine'&&at&&distance(p.position,at)<=2&&free(g,at)&&g.objects.length<C.maxObjects&&!g.objects.some(o=>equal(o.at,at))&&!g.springs.some(s=>equal(s.at,at))){g.objects.push({id:'mine'+a.seq,kind:'mine',at,hp:SKILLS.mine.objectHp,maxHp:SKILLS.mine.objectHp,height:.1,owner:p.id,created:g.now});success=true;
  }else if(a.skill==='hook'){const t=g.players.find(t=>t.id===a.targetId&&t.position);if(t?.position&&distance(p.position,t.position)<=3&&unobstructed(g,p,t)){visual(g,'hook',t.position,p.position);damage(g,t,5,p.id);if(t.position){stun(g,t,1000);const line=hexLine(t.position,p.position).slice(0,-1);t.forced={...a,from:{...t.position},path:line,start:g.now,end:g.now+C.hookMs,step:0};}success=true;}}
- p.outcome={seq:++g.seq,at:g.now,ok:success,reason:skill.name+(success?'已生效':'落空：目标或生效条件已变化（不退款）')};if(success)g.actionsHit++;log(g,`${p.name}的${skill.name}${success?'生效':'落空（不退款）'}`);
+ p.outcome={seq:++g.seq,at:g.now,ok:success,reason:deploymentReason??skill.name+(success?'已生效':'落空：目标或生效条件已变化（不退款）')};if(success)g.actionsHit++;log(g,`${p.name}的${skill.name}${success?'生效':'落空（不退款）'}`);
 }
 function finishCharge(g:Arena,p:Fighter,a:ActiveAction){if(p.movement===a)p.movement=null;for(const id of a.carried||[]){const t=g.players.find(t=>t.id===id&&t.position);if(t){t.carriedBy=null;push(g,t,(a.direction!+C.chargeSide)%6,1,{source:p.id,used:new Set(),count:0});}}}
 function movement(g:Arena){

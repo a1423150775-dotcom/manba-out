@@ -39,7 +39,10 @@
     "test:movement-input:network": "node scripts/movement-input-network.mjs",
     "test:arrow-range": "vitest run src/realtime/arrowRange.test.ts",
     "test:arrow-range:browser": "node scripts/arrow-range-browser.mjs",
-    "test:arrow-range:network": "node scripts/arrow-range-network.mjs"
+    "test:arrow-range:network": "node scripts/arrow-range-network.mjs",
+    "test:cover": "vitest run src/realtime/cover.test.ts",
+    "test:cover:browser": "node scripts/cover-browser.mjs",
+    "test:cover:network": "node scripts/cover-network.mjs"
   },
   "dependencies": {
     "express": "5.1.0",

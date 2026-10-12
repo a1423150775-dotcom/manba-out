@@ -311,3 +311,6 @@ npm run typecheck；npm test；npm run build；npm run test:realtime:network；n
 
 
 卡牌稳定性补测：上述4种视口的跟随模式各连续切换8次，卡牌/HUD/地图矩阵/滚动坐标完全一致；Tab焦点样式确认为dashed，全部卡牌type=button且无form归属。
+
+## 2026-10-12 速凝掩体定向修复
+全量293项测试、类型检查和生产构建通过。实际Chrome验证部分部署、火球/地雷/大运破墙、手机触摸和取消；独立Socket.IO验证同时部署、重复请求和重连。详见 [完整证据及限制](COVER_DEPLOYMENT_FIX.md)。

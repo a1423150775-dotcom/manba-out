@@ -161,3 +161,5 @@ npm run test:mobile
 当前卡牌库没有火球，因此没有新增火球规则或伪造火球落点测试。该轻量SVG方案不是完整3D引擎：人物与血条保持在地形上方以确保操作清晰，不提供真实3D遮挡、光照或地形物理。
 
 验证命令：npm test；npm run build；node scripts/render-modes-browser.mjs；npm run test:realtime:browser（PowerShell设置 $env:RENDER_STYLE='2.5d' 可测斜俯视）；npm run test:realtime:network；npm run test:maps:network；npm run test:mobile；npm run simulate:realtime。截图位于 render-review/。
+
+速凝掩体现采用选卡 → 中间格 → 三轴方向的三步操作，前摇结束逐格部署；详见 [部署修复报告](COVER_DEPLOYMENT_FIX.md)。

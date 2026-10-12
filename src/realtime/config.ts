@@ -13,7 +13,7 @@ elbow:{name:'牢大肘击',description:'0.3秒前摇，相邻目标30伤害、�
 charge:{name:'大运',description:'0.6秒前摇，0.9秒冲锋3格；撞击35伤害/晕1.2秒，结束向顺时针60°甩飞',energyCost:3,windup:600,recovery:0,targetType:'direction',range:3,effect:'charge',motion:true,damage:35,stun:1200,obstacleDamage:10},
 fireball:{name:'火球',description:'0.3秒前摇，1.7秒飞行；中心40、相邻30伤害，包含自己和障碍',energyCost:4,windup:300,recovery:0,targetType:'cell',range:4,effect:'fireball',damage:40,ringDamage:30},
 blink:{name:'闪现',description:'0.5秒前摇，瞬移至1～3格合法落点；忽略路径障碍',energyCost:2,windup:500,recovery:0,targetType:'cell',range:3,effect:'blink',motion:true},
-cover:{name:'速凝掩体',description:'0.5秒前摇，1～2格放置三连墙，每格10HP、每秒损耗2HP，最多5秒；全体合法才生成',energyCost:2,windup:500,recovery:0,targetType:'cell',range:2,effect:'cover',objectHp:10,units:3},
+cover:{name:'速凝掩体',description:'0.5秒前摇，1～2格放置三连墙，每格10HP、每秒损耗2HP，最多5秒；选中间格与轴向，前摇结束逐格部署',energyCost:2,windup:500,recovery:0,targetType:'cell',range:2,effect:'cover',objectHp:10,units:3},
 mine:{name:'地雷',description:'0.5秒前摇，1～2格放置10HP地雷；每秒失去2HP，踩踏或归零爆炸50/10伤害',energyCost:3,windup:500,recovery:0,targetType:'cell',range:2,effect:'mine',objectHp:10,damage:50,ringDamage:10},
 hook:{name:'钩锁',description:'0.5秒前摇，1～3格无遮挡目标5伤害、晕1秒，0.4秒拉至面前',energyCost:3,windup:500,recovery:0,targetType:'player',range:3,effect:'hook',damage:5,stun:1000},
 basic:{name:'平A',description:'0.3秒前摇，相邻玩家或障碍20伤害，无控制',energyCost:1,windup:300,recovery:0,targetType:'player',range:1,effect:'hit',damage:20},

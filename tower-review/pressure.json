@@ -1,0 +1,45 @@
+[
+  {
+    "attackers": 1,
+    "seconds": 4.85,
+    "hp": [
+      40
+    ],
+    "towerDestroyed": true,
+    "metrics": {
+      "towerShots": 4,
+      "towerHits": 4,
+      "towerDamage": 60,
+      "destroyed": [
+        {
+          "id": "tower",
+          "kind": "tower",
+          "at": 4850
+        }
+      ],
+      "pathFailures": 0
+    }
+  },
+  {
+    "attackers": 2,
+    "seconds": 1.55,
+    "hp": [
+      85,
+      100
+    ],
+    "towerDestroyed": true,
+    "metrics": {
+      "towerShots": 1,
+      "towerHits": 1,
+      "towerDamage": 15,
+      "destroyed": [
+        {
+          "id": "tower",
+          "kind": "tower",
+          "at": 1550
+        }
+      ],
+      "pathFailures": 0
+    }
+  }
+]

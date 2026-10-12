@@ -34,7 +34,7 @@ const server = createServer(app);
 const io = new Server(server, { cors: { origin: process.env.NODE_ENV === 'production' ? false : true }, maxHttpBufferSize: 64 * 1024 });
 installRealtime(io);
 const port = Number(process.env.PORT || 3001);
-const host = process.env.GAME_HOST || '0.0.0.0';
+const host = process.env.GAME_HOST || '127.0.0.1';
 let timedTicker: ReturnType<typeof setInterval> | null = null;
 
 function cleanName(value: unknown): string {

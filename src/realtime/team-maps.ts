@@ -1,14 +1,23 @@
 import {board,type Hex} from '../core/hex';
 import type {ArenaMap} from './maps';
 const at=(q:number,r:number):Hex=>({q,r});
+// Mirror about world X=0 (axial q'=-q-r), preserving unequal upper/lower lanes.
+const mirror=(h:Hex)=>at(-h.q-h.r,h.r);
+const mobaFloors=board(7).filter(h=>Math.abs(h.q+h.r/2)<=6&&Math.abs(h.r)<=4).map(h=>{const x=Math.abs(h.q+h.r/2);let height=0;if(x<4.5){if(h.r<=-2)height=x>=3.5?.5:1;else if(h.r===-1)height=.5;else if(h.r>=3)height=x>=3.5?.5:1;else if(h.r===2)height=.5;}return{...h,height};});
+const blueSpawns=[at(-5,0),at(-5,1),at(-4,-1)];
+const blueTowers=[at(-3,-1),at(-4,2)];
 export const TEAM_MAPS:ArenaMap[]=[{
- version:1,id:'duel-bases',name:'双桥基地',description:'小型双路基地攻防，中路互通、两侧高台与可破坏掩障。',supportedModes:['moba'],
- floors:board(6).map(h=>({...h,height:Math.abs(h.r)===3?.5:Math.abs(h.r)>=4?1:0})),
- spawns:[at(-5,0),at(5,0),at(-5,1),at(5,-1),at(-4,-1),at(4,1)].map((at,i)=>({number:i+1,at,team:i%2?'red':'blue'})),springs:[],obstacles:[at(0,-2),at(0,2),at(1,-3),at(-1,3)],
- buildings:[{id:'blue-core',kind:'core',team:'blue',at:at(-6,0)},{id:'red-core',kind:'core',team:'red',at:at(6,0)},{id:'blue-tower',kind:'tower',team:'blue',at:at(-3,0)},{id:'red-tower',kind:'tower',team:'red',at:at(3,0)}],
- healing:[...[-1,0,1].map(r=>({team:'blue' as const,at:at(-4,r)})),...[-1,0,1].map(r=>({team:'red' as const,at:at(4,r)}))]
-},{version:1,id:'hill-castle',name:'双径山城',description:'红方守城、蓝方攻城。高台城墙、正门楼梯与侧翼阶梯；可从城墙跳落。',supportedModes:['siege'],
- floors:board(6).map(h=>({...h,height:h.q>=4?2:h.q>0?(Math.abs(h.r)<=1?h.q*.5:2):0})),
- spawns:[at(-5,0),at(4,0),at(-4,-1),at(4,-1),at(-4,1),at(4,1)].map((at,i)=>({number:i+1,at,team:i%2?'red':'blue'})),springs:[],obstacles:[at(2,-2),at(2,2),at(3,-2)],
- buildings:[{id:'castle-core',kind:'core',team:'red',at:at(5,0)},{id:'castle-gate',kind:'gate',team:'red',at:at(2,0)},{id:'castle-tower',kind:'tower',team:'red',at:at(3,-1)}],healing:[]
+ version:1,id:'duel-bases',name:'双桥基地',description:'上路高台正面推进，下路曲折侧翼；中央宽阔换线，石头可打开捷径。左右镜像基地与双塔。',supportedModes:['moba'],
+ floors:mobaFloors,
+ spawns:blueSpawns.flatMap((h,i)=>[{number:i*2+1,at:h,team:'blue' as const},{number:i*2+2,at:mirror(h),team:'red' as const}]),springs:[],
+ obstacles:[at(-1,-1),at(0,2)].flatMap(h=>[h,mirror(h)]),
+ buildings:[{id:'blue-core',kind:'core',team:'blue',at:at(-6,0)},{id:'red-core',kind:'core',team:'red',at:at(6,0)},...blueTowers.flatMap((h,i)=>[{id:'blue-tower-'+i,kind:'tower' as const,team:'blue' as const,at:h},{id:'red-tower-'+i,kind:'tower' as const,team:'red' as const,at:mirror(h)}])],
+ healing:[...[-1,0,1].map(r=>({team:'blue' as const,at:at(-4,r)})),...[-1,0,1].map(r=>({team:'red' as const,at:mirror(at(-4,r))}))]
+},{version:1,id:'hill-castle',name:'双径山城',description:'正门最短、南翼楼梯绕塔、北侧石墙可破；城内高台可绕行，进攻营地更接近战线。',supportedModes:['siege'],
+ // Three separated approaches. The gate has a level apron for melee; .5 steps reach the keep.
+ floors:board(7).filter(h=>h.q>=-4&&h.q<=6&&h.r>=-4&&h.r<=4).map(h=>{let height=0;if(h.q>=1){const route=h.r===0||h.r===1||h.r===3||h.r===-3||h.r===-2;height=route?Math.min(2,Math.max(0,(h.q-1)*.5)):2;}return{...h,height};}),
+ spawns:[at(-3,0),at(6,-1),at(-3,-1),at(6,0),at(-3,1),at(5,1)].map((at,i)=>({number:i+1,at,team:i%2?'red':'blue'})),springs:[],
+ obstacles:[at(1,-3),at(1,-2),at(-1,-1),at(-1,2)],
+ buildings:[{id:'castle-core',kind:'core',team:'red',at:at(4,0)},{id:'castle-gate',kind:'gate',team:'red',at:at(1,0)},{id:'castle-tower',kind:'tower',team:'red',at:at(0,1)}],
+ healing:[{team:'blue',at:at(-3,0)},{team:'blue',at:at(-3,1)}]
 }];

@@ -1,0 +1,7 @@
+import {execFileSync} from 'node:child_process';import fs from 'node:fs';
+const git=(...a)=>execFileSync('git',a,{maxBuffer:100*1024*1024}).toString();
+const entries=git('rev-list','--objects','--all').trim().split('\n').map(l=>l.split(/ (.*)/s)).filter(a=>a[1]);
+const indexed=git('ls-files','-s').trim().split('\n').map(l=>{const [meta,name]=l.split('\t');return [meta.split(' ')[1],name];});entries.push(...indexed);
+const patterns=[['private-key',/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/],['github-token',/(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})/],['cloud-key',/AKIA[A-Z0-9]{16}/],['literal-credential',/(?:password|access_token|api_key|natfrp_token|authorization|secret|token)["']?\s*[:=]\s*["'][A-Za-z0-9+\/_=-]{20,}["']/i]];
+const findings=[],seen=new Set();let blobs=0;for(const [oid,name]of entries){if(seen.has(oid)||! /\.(?:tsx?|m?js|cjs|json|md|txt|ya?ml|ps1|cs|env|config|html|bat|sh)$|(?:^|\/)\.env/.test(name))continue;seen.add(oid);const s=git('cat-file','-p',oid);blobs++;for(const [rule,re]of patterns)if(re.test(s))findings.push({name,oid,rule});}
+fs.mkdirSync('tower-review',{recursive:true});fs.writeFileSync('tower-review/security-scan.json',JSON.stringify({historicalAndIndexedTextBlobs:blobs,findings,note:'All reachable historical and staged text blobs scanned; values never logged. Not proof of absence of every possible secret.'},null,2));console.log({historicalAndIndexedTextBlobs:blobs,findings});if(findings.length)process.exitCode=1;

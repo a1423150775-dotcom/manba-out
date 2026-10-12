@@ -1,0 +1,10 @@
+import {it,expect} from 'vitest';
+import {BUILTIN_MAPS,validateMap} from './maps';
+import {DIRS,add,key,equal} from '../core/hex';
+import {moveHeight} from './space';
+import {createArena,damageObject,free} from './engine';
+const moba=BUILTIN_MAPS.find(m=>m.id==='duel-bases')!,castle=BUILTIN_MAPS.find(m=>m.id==='hill-castle')!;
+it('MOBA upper/lower routes and side stairs preserve left/right geometric symmetry',()=>{validateMap(moba,6);for(const h of moba.floors){const m=moba.floors.find(t=>t.q===-h.q-h.r&&t.r===h.r);expect(m?.height).toBe(h.height);}for(const b of moba.buildings!)expect(moba.buildings!.some(t=>t.kind===b.kind&&t.team!==b.team&&t.at.q===-b.at.q-b.at.r&&t.at.r===b.at.r)).toBe(true);});
+it('castle has three separate approaches, legal stairs and breachable walls',()=>{validateMap(castle,6);for(const r of [0,-3,3]){for(let q=0;q<4;q++)expect(moveHeight(castle,{q,r},{q:q+1,r})).toBe(true);}expect(castle.obstacles).toContainEqual({q:1,r:-3});expect(castle.buildings!.find(b=>b.kind==='gate')!.at).toEqual({q:1,r:0});});
+it('destroyed gate and stone open the original floor without erasing terrain',()=>{const g=createArena([{id:'a',name:'a',color:'blue',team:'blue'},{id:'b',name:'b',color:'red',team:'red'}],1,'breach',10000,castle,{mode:'siege'});for(const o of [...g.objects].filter(o=>o.kind==='gate'||o.kind==='stone')){expect(free(g,o.at)).toBe(false);damageObject(g,o,o.hp,'a');expect(free(g,o.at)).toBe(true);expect(g.map.floors.some(h=>equal(h,o.at))).toBe(true);}});
+it('all spawns can reach opposing core surroundings without climbing cliffs',()=>{for(const map of [moba,castle])for(const spawn of map.spawns){const enemy=map.buildings!.find(b=>b.kind==='core'&&b.team!==spawn.team);if(!enemy)continue;const queue=[spawn.at],seen=new Set<string>();while(queue.length){const a=queue.shift()!;if(seen.has(key(a)))continue;seen.add(key(a));for(const d of DIRS){const b=add(a,d);if(map.floors.some(h=>equal(h,b))&&moveHeight(map,a,b)&&!seen.has(key(b)))queue.push(b);}}expect(seen.has(key(enemy.at))).toBe(true);}});

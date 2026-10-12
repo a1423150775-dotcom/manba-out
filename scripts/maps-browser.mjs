@@ -1,0 +1,42 @@
+import {chromium} from '@playwright/test';
+import {spawn} from 'node:child_process';
+import {mkdirSync,writeFileSync,readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const url='http://127.0.0.1:5193',server=spawn(process.execPath,['dist/server/index.js'],{env:{...process.env,PORT:'5193',NODE_ENV:'production'},stdio:'ignore'});
+const wait=async f=>{for(let i=0;i<250;i++){if(await f())return;await new Promise(r=>setTimeout(r,40));}throw Error('timeout');};
+mkdirSync('maps-review',{recursive:true});let browser;const checks=[],errors=[];
+const monitor=p=>{let state;p.on('pageerror',e=>errors.push(e.message));p.on('websocket',ws=>ws.on('framereceived',f=>{const v=String(f.payload);if(v.startsWith('42/realtime,')){const[e,s]=JSON.parse(v.slice(v.indexOf('[')));if(e==='state')state=s;}}));return()=>state;};
+try{
+ await wait(async()=>{try{return(await fetch(url+'/health')).ok;}catch{return false;}});browser=await chromium.launch({channel:'chrome',headless:true});
+ const editorContext=await browser.newContext({viewport:{width:1440,height:1000}}),editor=await editorContext.newPage();monitor(editor);await editor.goto(url+'/?mode=editor');
+ const draft=async()=>JSON.parse(await editor.locator('.map-work pre').textContent());
+ await editor.locator('[data-cell="5,0"] polygon').click();assert.ok((await draft()).floors.some(h=>h.q===5&&h.r===0));
+ await editor.getByRole('button',{name:'删除地板',exact:true}).click();await editor.locator('[data-cell="5,0"] polygon').click();assert.ok(!(await draft()).floors.some(h=>h.q===5&&h.r===0));
+ await editor.getByRole('button',{name:'添加地板',exact:true}).click();await editor.locator('[data-cell="5,0"] polygon').click();
+ await editor.getByRole('button',{name:'设置出生点',exact:true}).click();await editor.getByLabel('出生点编号').selectOption('6');await editor.locator('[data-cell="5,0"] polygon').click();assert.deepEqual((await draft()).spawns.find(s=>s.number===6).at,{q:5,r:0});
+ await editor.getByRole('button',{name:'放置弹簧',exact:true}).click();await editor.getByLabel('弹簧方向').selectOption('2');await editor.locator('[data-cell="0,1"] polygon').click();assert.equal((await draft()).springs.find(s=>s.at.q===0&&s.at.r===1).direction,2);
+ await editor.getByRole('button',{name:'放置障碍',exact:true}).click();await editor.locator('[data-cell="1,0"] polygon').click();assert.ok((await draft()).obstacles.length===1);
+ await editor.getByRole('button',{name:'删除机关障碍',exact:true}).click();await editor.locator('[data-cell="1,0"] polygon').click();assert.equal((await draft()).obstacles.length,0);
+ await editor.getByRole('button',{name:'删除出生点',exact:true}).click();await editor.locator('[data-cell="-4,0"] polygon').click();assert.equal((await draft()).spawns.length,5);
+ await editor.getByRole('button',{name:'设置出生点',exact:true}).click();await editor.getByLabel('出生点编号').selectOption('4');await editor.locator('[data-cell="-4,0"] polygon').click();assert.equal((await draft()).spawns.length,6);
+ await editor.getByRole('button',{name:'放大',exact:true}).click();await editor.getByRole('button',{name:'放置障碍',exact:true}).click();await editor.locator('[data-cell="0,-1"] polygon').click();assert.ok((await draft()).obstacles.some(h=>h.q===0&&h.r===-1));await editor.getByRole('button',{name:'删除机关障碍',exact:true}).click();await editor.locator('[data-cell="0,-1"] polygon').click();
+ const beforeDrag=await draft(),bounds=await editor.locator('.map-canvas').boundingBox();await editor.mouse.move(bounds.x+bounds.width/2,bounds.y+bounds.height/2);await editor.mouse.down();await editor.mouse.move(bounds.x+bounds.width/2+80,bounds.y+bounds.height/2+40,{steps:10});await editor.mouse.up();assert.deepEqual(await draft(),beforeDrag);await editor.getByRole('button',{name:'重置视角',exact:true}).click();
+ await editor.getByLabel('地图名称',{exact:true}).fill('测试工坊');await editor.getByRole('button',{name:'保存地图',exact:true}).click();await editor.getByRole('status').filter({hasText:'地图已保存'}).waitFor();
+ const expected=await draft();expected.spawns.sort((a,b)=>a.number-b.number);const downloadPromise=editor.waitForEvent('download');await editor.getByRole('button',{name:'导出JSON',exact:true}).click();const download=await downloadPromise;await download.saveAs('maps-review/custom-map.json');assert.deepEqual(JSON.parse(readFileSync('maps-review/custom-map.json','utf8')),expected);
+ await editor.getByLabel('地图名称',{exact:true}).fill('临时修改');await editor.getByLabel('导入JSON',{exact:true}).setInputFiles('maps-review/custom-map.json');await editor.getByRole('status').filter({hasText:'导入成功'}).waitFor();assert.deepEqual(await draft(),expected);
+ await editor.getByRole('button',{name:'预览地图',exact:true}).click();await editor.screenshot({path:'maps-review/editor-preview.png',fullPage:true});await editor.getByRole('button',{name:'继续编辑',exact:true}).click();await editor.screenshot({path:'maps-review/editor.png',fullPage:true});checks.push('editor add/delete floor, numbered spawn, directed spring, obstacle/delete, save/export/import exact roundtrip, preview');
+ const pop=editorContext.waitForEvent('page');await editor.getByRole('button',{name:'使用Bot测试地图'}).click();const custom=await pop,getCustom=monitor(custom);await custom.locator('.rt-lobby').waitFor();await custom.getByRole('button',{name:'开始实时战斗'}).click();await custom.locator('.rt-board').waitFor();await wait(()=>getCustom()?.game);assert.equal(getCustom().game.map.name,'测试工坊');assert.equal(getCustom().game.players.filter(p=>p.bot).length,3);await custom.screenshot({path:'maps-review/custom-bot.png'});checks.push('editor launches real server-validated custom-map Bot game');
+ for(const id of ['classic','abyss','factory']){
+  const context=await browser.newContext({viewport:{width:1440,height:1000}}),page=await context.newPage(),state=monitor(page);await page.goto(url+'/?mode=realtime');await page.getByText('实时乱斗 · 已连接',{exact:true}).waitFor();await page.getByRole('button',{name:'单人测试',exact:true}).click();await page.locator('.rt-lobby').waitFor();await page.getByLabel('选择战场').selectOption(id);await wait(()=>state()?.map.id===id);await page.getByRole('button',{name:'开始实时战斗'}).click();await page.locator('.rt-board').waitFor();await wait(()=>state()?.game);assert.equal(state().game.map.id,id);
+  await page.locator('.rt-info-drawer>summary').click();await page.locator('.rt-debug summary').click();await page.getByRole('button',{name:'暂停Bot行动'}).click();await page.locator('.rt-info-drawer>summary').click();
+  await page.getByRole('button',{name:'全地图',exact:true}).click();await page.screenshot({path:`maps-review/${id}.png`});
+  const before=state().game.players.find(p=>p.id===state().you).position;const target={q:before.q,r:before.r-1};await page.locator(`[data-cell="${target.q},${target.r}"] polygon`).click();await wait(()=>state().game.players.find(p=>p.id===state().you).position?.r===target.r);await wait(()=>!state().game.players.find(p=>p.id===state().you).action);
+  await page.getByRole('button',{name:'跟随视角',exact:true}).click();await page.waitForTimeout(250);const actor=await page.locator(`[data-player="${state().you}"] circle`).boundingBox(),hud=await page.locator('.rt-skills').boundingBox();assert.ok(actor.y+actor.height<hud.y,'follow actor above HUD');assert.equal(await page.locator('[data-slot]').count(),4);await page.screenshot({path:`maps-review/${id}-follow.png`});
+  const bb=await page.locator('.rt-board').boundingBox();assert.ok(bb.width>=1400&&bb.height>=990);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);checks.push(`${id}: actual game, default movement, full viewport, follow above HUD, 4 cards`);
+  if(id==='classic'){
+   for(const [width,height]of [[320,568],[390,844],[844,390]]){await page.setViewportSize({width,height});await page.waitForTimeout(100);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);const card=await page.locator('[data-slot="0"]').boundingBox();assert.ok(card.x>=0&&card.y+card.height<=height);await page.screenshot({path:`maps-review/hud-${width}x${height}.png`});}
+  }
+  await context.close();
+ }
+ assert.deepEqual(errors,[]);writeFileSync('maps-review/browser.json',JSON.stringify({checks,errors},null,2));console.log({checks,errors});
+}catch(e){if(browser)for(const c of browser.contexts())for(const p of c.pages()){console.log((await p.locator('body').innerText()).slice(-1300));await p.screenshot({path:'maps-review/failure-'+c.pages().indexOf(p)+'.png'});}throw e;}finally{await browser?.close();server.kill();}

@@ -1,0 +1,1 @@
+import {mkdirSync,writeFileSync} from 'node:fs';import {BUILTIN_MAPS} from '../src/realtime/maps';mkdirSync('maps',{recursive:true});for(const map of BUILTIN_MAPS)writeFileSync(`maps/${map.id}.json`,JSON.stringify(map,null,2));

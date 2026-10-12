@@ -1,0 +1,51 @@
+{
+  "name": "bad-friends-arena",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "node --watch --import tsx scripts/debug-server.mjs",
+    "dev:web": "vite --host 0.0.0.0",
+    "test": "vitest run",
+    "simulate": "tsx scripts/simulate.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "npm run typecheck && vite build && esbuild src/server/index.ts --bundle --platform=node --format=esm --packages=external --outfile=dist/server/index.js",
+    "build:portable:bundle": "esbuild src/server/index.ts --bundle --platform=node --format=cjs --target=node24 --outfile=dist/server/portable.cjs",
+    "build:portable": "npm run build && npm run build:portable:bundle && node scripts/build-portable.mjs",
+    "start": "node dist/server/index.js",
+    "test:mobile": "node scripts/mobile-check.mjs",
+    "test:realtime": "vitest run src/realtime",
+    "test:realtime:network": "node scripts/realtime-network.mjs",
+    "test:realtime:browser": "node scripts/realtime-browser.mjs",
+    "simulate:realtime": "tsx scripts/realtime-simulate.ts",
+    "test:cards:browser": "node scripts/card-repair-browser.mjs",
+    "test:maps": "vitest run src/realtime/maps.test.ts",
+    "test:maps:network": "node scripts/maps-network.mjs",
+    "test:maps:browser": "node scripts/maps-browser.mjs",
+    "test:maps:touch": "node scripts/maps-touch.mjs",
+    "simulate:maps": "tsx scripts/maps-simulate.ts",
+    "export:maps": "tsx scripts/export-maps.ts"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "socket.io": "4.8.1",
+    "socket.io-client": "4.8.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/express": "5.0.3",
+    "@types/node": "24.3.0",
+    "@types/react": "19.1.10",
+    "@types/react-dom": "19.1.7",
+    "@vitejs/plugin-react": "4.7.0",
+    "concurrently": "9.2.1",
+    "esbuild": "0.25.9",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2",
+    "vite": "6.3.5",
+    "vitest": "3.2.4"
+  }
+}

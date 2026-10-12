@@ -1,0 +1,55 @@
+{
+  "results": [
+    {
+      "mode": "moba",
+      "actualBrowser": "human+3Bots+independent observer;2D/2.5D/full/follow/mobile;90second match completed",
+      "metrics": {
+        "towerShots": 93,
+        "towerHits": 82,
+        "towerDamage": 1585.5,
+        "coreShots": 8,
+        "coreDamage": 260,
+        "towerMinionShots": 61,
+        "towerPlayerShots": 32,
+        "coreMinionShots": 1,
+        "corePlayerShots": 7,
+        "minionSpawns": 12,
+        "minionDeaths": 5,
+        "minionBuildingDamage": 0,
+        "destroyed": [],
+        "pathFailures": 0
+      },
+      "winner": "draw"
+    },
+    {
+      "mode": "siege",
+      "actualBrowser": "human+3Bots+independent observer;2D/2.5D/full/follow/mobile;90second match completed",
+      "metrics": {
+        "towerShots": 28,
+        "towerHits": 25,
+        "towerDamage": 492.5,
+        "coreShots": 7,
+        "coreDamage": 270,
+        "towerMinionShots": 5,
+        "towerPlayerShots": 23,
+        "coreMinionShots": 3,
+        "corePlayerShots": 4,
+        "minionSpawns": 1,
+        "minionDeaths": 1,
+        "minionBuildingDamage": 0,
+        "destroyed": [
+          {
+            "id": "map:castle-gate",
+            "kind": "gate",
+            "at": 52350
+          }
+        ],
+        "pathFailures": 0
+      },
+      "winner": "red"
+    },
+    "6Bot live MOBA with spectator",
+    "editor both new maps; range overlay; height projection"
+  ],
+  "errors": []
+}

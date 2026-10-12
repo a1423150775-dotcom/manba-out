@@ -1,0 +1,5 @@
+{
+  "historicalAndIndexedTextBlobs": 433,
+  "findings": [],
+  "note": "All reachable historical and staged text blobs scanned; values never logged. Not proof of absence of every possible secret."
+}

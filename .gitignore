@@ -35,3 +35,8 @@ building-arrow-review/*
 !building-arrow-review/*.png
 !building-arrow-review/*.json
 building-arrow-review/failure*
+
+!tuning-review/
+tuning-review/*
+!tuning-review/*.png
+!tuning-review/*.json

@@ -1,19 +1,21 @@
+import {setNavigation} from '../realtime/navigation';
 import {chooseMap,validateMap,type ArenaMap} from '../realtime/maps';
 import { randomBytes, randomInt } from 'node:crypto';
 import type { Server, Socket } from 'socket.io';
 import { CARD_PROTOCOL,CHARACTERS,DEFAULT_DECK,RT_CONFIG,validDeck,migrateDeck,type CharacterId } from '../realtime/config';
-import { addFighter,buyResource,createArena,log,useHandCard,requestMovement,stepArena,type Arena,type BotMode,type Difficulty,type Setup } from '../realtime/engine';
+import { addFighter,buyResource,createArena,log,useHandCard,submitHand,cancelBuffered,requestMovement,stepArena,type Arena,type BotMode,type Difficulty,type Setup } from '../realtime/engine';
 import { decideBots } from '../realtime/bots';
 
 type Seat=Setup & {token:string;socketId:string|null;observer:boolean};
-type Room={map:ArenaMap;code:string;hostId:string;test:boolean;spectate:boolean;seed:number;seats:Seat[];game:Arena|null;cache:Map<string,unknown>;lastWall:number;accumulator:number;idleSince:number|null};
+type Room={map:ArenaMap;code:string;hostId:string;test:boolean;spectate:boolean;seed:number;seats:Seat[];game:Arena|null;cache:Map<string,unknown>;lastWall:number;accumulator:number;idleSince:number|null;feedback:Map<string,number>};
 const colors=['#ec685b','#39aab7','#e5a529','#9b7ddd','#46a46e','#df679d'];
 const id=()=>randomBytes(12).toString('hex');
 const name=(n:unknown)=>typeof n==='string'?n.replace(/[<>\u0000-\u001f]/g,'').trim().slice(0,16):'';
 export function installRealtime(io:Server){
   const ns=io.of('/realtime'),rooms=new Map<string,Room>();
   const own=(socket:Socket)=>{const room=rooms.get(socket.data.rtCode),seat=room?.seats.find(s=>s.id===socket.data.rtId&&s.socketId===socket.id);return room&&seat?{room,seat}:null;};
-  const broadcast=(room:Room)=>{for(const s of room.seats)if(s.socketId){const game=room.game?{...room.game,seed:undefined,rng:undefined}:null;ns.to(s.socketId).emit('state',{cardProtocol:CARD_PROTOCOL,map:room.map,code:room.code,you:s.id,hostId:room.hostId,test:room.test,spectate:room.spectate,seed:room.test?room.seed:undefined,seats:room.seats.map(({token,socketId,...p})=>({...p,online:!!socketId})),game});}};
+  const flushFeedback=(room:Room)=>{for(const p of room.game?.players||[]){const result=p.inputResult;if(result&&room.feedback.get(p.id)!==result.seq){room.feedback.set(p.id,result.seq);room.cache.set(p.id+':'+result.requestId,result);const seat=room.seats.find(s=>s.id===p.id);if(seat?.socketId)ns.to(seat.socketId).emit('skillResult',result);}}};
+  const broadcast=(room:Room)=>{flushFeedback(room);for(const s of room.seats)if(s.socketId){const game=room.game?{...room.game,seed:undefined,rng:undefined}:null;ns.to(s.socketId).emit('state',{cardProtocol:CARD_PROTOCOL,map:room.map,code:room.code,you:s.id,hostId:room.hostId,test:room.test,spectate:room.spectate,seed:room.test?room.seed:undefined,seats:room.seats.map(({token,socketId,...p})=>({...p,online:!!socketId})),game});}};
   const bind=(socket:Socket,room:Room,seat:Seat)=>{const old=own(socket);if(old&&old.seat!==seat){old.seat.socketId=null;broadcast(old.room);}if(seat.socketId&&seat.socketId!==socket.id)ns.sockets.get(seat.socketId)?.disconnect(true);seat.socketId=socket.id;socket.data.rtCode=room.code;socket.data.rtId=seat.id;room.idleSince=null;broadcast(room);};
   const addBot=(room:Room,character:CharacterId='laoda',difficulty:Difficulty='normal')=>{
     if(room.seats.filter(s=>!s.observer).length>=6)throw new Error('真人和Bot合计最多6名');
@@ -33,7 +35,7 @@ export function installRealtime(io:Server){
       if(own(socket))throw new Error('请先离开当前房间');
       let code='';do{code=randomBytes(3).toString('hex').toUpperCase();}while(rooms.has(code));
       const seat:Seat={id:id(),token:randomBytes(32).toString('hex'),socketId:null,name:name(input?.name)||'神秘牢大1',color:colors[0],character:Object.hasOwn(CHARACTERS,input?.character)?input.character:'laoda',deck:migrateDeck(input?.deck)||[...DEFAULT_DECK],observer:input?.mode==='spectate'};
-      const room:Room={map:input?.map?validateMap(input.map):input?.mapId?chooseMap(input.mapId):chooseMap('classic'),code,hostId:seat.id,test:input?.mode==='solo'||seat.observer,spectate:seat.observer,seed:Number.isInteger(input?.seed)?input.seed>>>0:randomInt(0x100000000),seats:[seat],game:null,cache:new Map(),lastWall:performance.now(),accumulator:0,idleSince:null};
+      const room:Room={map:input?.map?validateMap(input.map):input?.mapId?chooseMap(input.mapId):chooseMap('classic'),code,hostId:seat.id,test:input?.mode==='solo'||seat.observer,spectate:seat.observer,seed:Number.isInteger(input?.seed)?input.seed>>>0:randomInt(0x100000000),seats:[seat],game:null,cache:new Map(),lastWall:performance.now(),accumulator:0,idleSince:null,feedback:new Map()};
       rooms.set(code,room);if(room.test)for(let i=0;i<Math.min(seat.observer?6:3,room.map.spawns.length-(seat.observer?0:1));i++)addBot(room,(['laoda','tank','mouse'] as CharacterId[])[i%3]);bind(socket,room,seat);return{ok:true,code,token:seat.token};
     });
     command('join',input=>{
@@ -64,16 +66,18 @@ export function installRealtime(io:Server){
       if(room.cache.size>=8192)throw new Error('本局请求上限已达');
       const result=callback(room,seat);room.cache.set(key,result);broadcast(room);return result;
     };
-    command('skill',input=>{if(input?.cardProtocol!==CARD_PROTOCOL)return{ok:false,reason:'页面版本已过期，请刷新页面后重新选择卡牌',code:'CLIENT_VERSION'};return dedup(input,(room,seat)=>(()=>{if(input.intent?.kind==='move')return requestMovement(room.game!,seat.id,input.intent.at);const p=room.game!.players.find(p=>p.id===seat.id);const slot=input.intent?.slot;if(!Number.isInteger(slot)||slot<0||slot>3||!p)return{ok:false,reason:'请选择当前手牌槽位'};return useHandCard(room.game!,seat.id,{slot,instanceId:input.intent.instanceId,targetId:input.intent.targetId,at:input.intent.at,direction:input.intent.direction,arc:input.intent.arc,auto:input.intent.auto});})());});
+    command('skill',input=>{if(input?.cardProtocol!==CARD_PROTOCOL)return{ok:false,reason:'页面版本已过期，请刷新页面后重新选择卡牌',code:'CLIENT_VERSION'};return dedup(input,(room,seat)=>(()=>{if(input.intent?.kind==='move')return requestMovement(room.game!,seat.id,input.intent.at);const p=room.game!.players.find(p=>p.id===seat.id);const slot=input.intent?.slot;if(!Number.isInteger(slot)||slot<0||slot>3||!p)return{ok:false,reason:'请选择当前手牌槽位'};return submitHand(room.game!,seat.id,{slot,instanceId:input.intent.instanceId,targetId:input.intent.targetId,at:input.intent.at,direction:input.intent.direction,arc:input.intent.arc,auto:input.intent.auto},input.requestId);})());});
+    command('navigate',input=>dedup(input,(room,seat)=>setNavigation(room.game!,seat.id,input.navigation)));
+    command('cancelInput',input=>dedup(input,(room,seat)=>cancelBuffered(room.game!,seat.id)));
     command('buy',input=>dedup(input,(room,seat)=>buyResource(room.game!,seat.id,input.item)));
-    command('finish',()=>{const{room}=authorized(true);if(!room.test||!room.game)throw new Error('仅测试房主可提前结束');room.game.phase='finished';for(const p of room.game.players){p.action=null;p.movement=null;p.forced=null;}log(room.game,'测试房主结束对局');broadcast(room);});
+    command('finish',()=>{const{room}=authorized(true);if(!room.test||!room.game)throw new Error('仅测试房主可提前结束');room.game.phase='finished';for(const p of room.game.players){cancelBuffered(room.game,p.id,'比赛已结束');p.navigation=null;p.action=null;p.movement=null;p.forced=null;}log(room.game,'测试房主结束对局');broadcast(room);});
     command('leave',()=>{const{room,seat}=authorized();if(seat.id===room.hostId){rooms.delete(room.code);for(const s of room.seats)if(s.socketId){const peer=ns.sockets.get(s.socketId);if(peer){peer.emit('closed');delete peer.data.rtCode;delete peer.data.rtId;}}}else{if(room.game?.phase==='playing')throw new Error('比赛进行中，关闭页面会保留身份');room.seats=room.seats.filter(s=>s!==seat);delete socket.data.rtCode;delete socket.data.rtId;broadcast(room);}return{ok:true};});
     socket.on('disconnect',()=>{const o=own(socket);if(o){o.seat.socketId=null;broadcast(o.room);}});
   });
   let ticks=0;
   const timer=setInterval(()=>{const now=performance.now();for(const room of rooms.values()){
     if(!room.seats.some(s=>s.socketId)){room.idleSince??=now;if(now-room.idleSince>600000){rooms.delete(room.code);continue;}}else room.idleSince=null;
-    const elapsed=now-room.lastWall;room.lastWall=now;if(room.game?.phase==='playing'){room.accumulator+=elapsed;let steps=0;while(room.accumulator>=RT_CONFIG.tickMs&&steps++<200){room.accumulator-=RT_CONFIG.tickMs;stepArena(room.game);decideBots(room.game);}if(ticks%2===0||room.game.now>=room.game.duration)broadcast(room);}
+    const elapsed=now-room.lastWall;room.lastWall=now;if(room.game?.phase==='playing'){room.accumulator+=elapsed;let steps=0;while(room.accumulator>=RT_CONFIG.tickMs&&steps++<200){room.accumulator-=RT_CONFIG.tickMs;stepArena(room.game);decideBots(room.game);flushFeedback(room);}if(ticks%2===0||room.game.now>=room.game.duration)broadcast(room);}
   }ticks++;},RT_CONFIG.tickMs);timer.unref();
   io.httpServer?.on('close',()=>clearInterval(timer));
   return rooms;

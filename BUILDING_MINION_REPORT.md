@@ -91,3 +91,11 @@ MOBA：双方每15秒2只（上下路各1），每队上限6。保留上一轮�
 ## 最终浏览器验收
 
 `building-review/browser.json`：实际Chrome完成MOBA和城堡各60秒真人+3Bot+独立观众对局，真人释放技能、建筑实际开火、双方/攻方兵线生成与观众同步；2D/2.5D、全图/跟随、390px布局无横溢出，6Bot观战和两张地图编辑器预览通过，页面错误0。测试中修复了脚本切换模式后未等待服务端确认就填时长的竞态，没有借改游戏规则绕过。
+
+## GitHub与干净部署
+
+代码提交`42ad82e17083fe8aa0c5f538ac60977ba9561e39`已正常推送到`https://github.com/a1423150775-dotcom/manba-out`的`main`，本地开发分支`feature-building-skills-minions`。原远程和历史保留，未强推。随后的文档提交只补充部署证据。
+
+从GitHub全新Clone至`verification/building-clean`，空npm缓存`npm ci`、生产构建、41文件363测试全部通过。Chrome再完成两场60秒双模式真人+3Bot+观众对局、6Bot观战和编辑器检查。端口冲突拒绝与停止释放通过。GUI构建脚本在克隆目录生成EXE和完整运行时包；使用其中GameServer从不同工作目录启动，两个Socket.IO客户端创建/加入房间、认证安全停止通过。GUI按钮仍未亲点，未标记为通过。
+
+证据：`building-review/clean-clone.json`、`clean-clone-browser.json`。新目录构建命令与README一致，不依赖D:\game未提交资源。本机5180服务已更新，保留原0.0.0.0监听；公开源码工具仍默认127.0.0.1。历史与待发布文本扫描411对象未命中凭据规则，不等于保证任何形式的秘密都不存在。

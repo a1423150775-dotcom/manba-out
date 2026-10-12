@@ -152,3 +152,5 @@ node .\scripts\local-server-smoke.mjs
 上一轮已从GitHub重新Clone，使用空npm缓存安装、构建、334项测试，以及Chrome真人/Bot/观众双模式短局均通过；GUI构建脚本和便携开服/停止链路通过。GUI按钮受桌面激活失败限制未实测。详见`tower-review/clean-clone.json`。
 
 开发依赖已更新Vite6.4.4、concurrently9.2.5、Vitest3.2.7。生产依赖审计0项；Vitest工具链仍有3条开发依赖告警（2critical、1moderate），需要跨主版本升级，本轮没有强制升级。不要公开开发/测试服务器。
+
+当前建筑/小兵轮次也已从GitHub全新Clone，空缓存安装、类型检查/生产构建、363项测试通过；Chrome完成MOBA与城堡各60秒真人+Bot+观众对局、6Bot观战及编辑器检查；GUI源码构建与便携后端独立目录开服/停止通过，GUI按钮仍未亲点。详见`building-review/clean-clone.json`和`BUILDING_MINION_REPORT.md`。

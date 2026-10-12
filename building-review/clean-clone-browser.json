@@ -1,0 +1,49 @@
+{
+  "results": [
+    {
+      "mode": "moba",
+      "actualBrowser": "human+3Bots+independent observer;2D/2.5D/full/follow/mobile;60second match completed",
+      "metrics": {
+        "towerShots": 66,
+        "towerHits": 58,
+        "towerDamage": 1145.5,
+        "coreShots": 14,
+        "coreDamage": 364,
+        "towerMinionShots": 34,
+        "towerPlayerShots": 32,
+        "coreMinionShots": 0,
+        "corePlayerShots": 14,
+        "minionSpawns": 13,
+        "minionDeaths": 1,
+        "minionBuildingDamage": 0,
+        "destroyed": [],
+        "pathFailures": 0
+      },
+      "winner": "draw"
+    },
+    {
+      "mode": "siege",
+      "actualBrowser": "human+3Bots+independent observer;2D/2.5D/full/follow/mobile;60second match completed",
+      "metrics": {
+        "towerShots": 14,
+        "towerHits": 13,
+        "towerDamage": 260,
+        "coreShots": 7,
+        "coreDamage": 163.5,
+        "towerMinionShots": 5,
+        "towerPlayerShots": 9,
+        "coreMinionShots": 3,
+        "corePlayerShots": 4,
+        "minionSpawns": 1,
+        "minionDeaths": 0,
+        "minionBuildingDamage": 5,
+        "destroyed": [],
+        "pathFailures": 0
+      },
+      "winner": "red"
+    },
+    "6Bot live MOBA with spectator",
+    "editor both new maps; range overlay; height projection"
+  ],
+  "errors": []
+}

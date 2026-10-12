@@ -1,0 +1,16 @@
+{
+  "source": "https://github.com/a1423150775-dotcom/manba-out.git",
+  "testedCommit": "42ad82e17083fe8aa0c5f538ac60977ba9561e39",
+  "directory": "verification/building-clean",
+  "install": "npm ci --cache .npm-clean-cache: success, 235 packages; initially empty cache",
+  "build": "npm run build: TypeScript, Vite and server bundle passed",
+  "tests": {"files":41,"passed":363,"failed":0},
+  "browser": "Chrome: MOBA and siege each 60-second human+3Bot+independent spectator match completed; minions/aim/projectiles observed; 2D/2.5D/full/follow/mobile layout;6Bot spectator;editor passed",
+  "localServer": "loopback production web+health; port collision rejected; owned stop released port",
+  "guiBuild": "Windows GUI EXE and self-contained Node portable package built from cloned sources",
+  "guiButtons": "not verified: native desktop activation unavailable in preceding attempt",
+  "portableServer": "bundled runtime started from independent cwd;2 Socket.IO clients create/join;authenticated stop exited0",
+  "productionAudit": {"vulnerabilities":0},
+  "developmentAudit": {"moderate":1,"critical":2},
+  "publicInternetDevices": "not tested"
+}

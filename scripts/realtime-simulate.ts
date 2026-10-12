@@ -3,7 +3,8 @@ import { writeFileSync,mkdirSync } from 'node:fs';
 import { createArena,stepArena,type Setup } from '../src/realtime/engine';
 import { decideBots } from '../src/realtime/bots';
 import { CHARACTERS,type CharacterId } from '../src/realtime/config';
-import { key,onBoard } from '../src/core/hex';
+import {hasFloor} from '../src/realtime/maps';
+import { key } from '../src/core/hex';
 mkdirSync('realtime-review',{recursive:true});
 const results=[];const cpu=process.cpuUsage(),wall=performance.now(),memoryBefore=process.memoryUsage().heapUsed;
 for(const scenario of [{humans:1,bots:1},{humans:1,bots:3},{humans:1,bots:5},{humans:0,bots:6}]){
@@ -14,7 +15,7 @@ for(const scenario of [{humans:1,bots:1},{humans:1,bots:3},{humans:1,bots:5},{hu
   while(g.phase==='playing'){
    stepArena(g);decideBots(g);
    const occupied=g.players.filter(p=>p.position).map(p=>key(p.position!));assert.equal(new Set(occupied).size,occupied.length,'duplicate occupancy');
-   for(const p of g.players){assert.equal(p.hand.length,4);assert.equal(p.queue.length,4);const cards=[...p.hand,...p.queue];assert.equal(new Set(cards.map(c=>c.id)).size,8);assert.deepEqual(cards.map(c=>c.skill).sort(),[...p.deck].sort());assert.ok(p.hp>=0&&p.hp<=CHARACTERS[p.character].hp);assert.ok(p.energy>=0&&p.energy<=10);if(p.position)assert.ok(onBoard(p.position));else assert.equal(p.hp,0);}
+   for(const p of g.players){assert.equal(p.hand.length,4);assert.equal(p.queue.length,4);const cards=[...p.hand,...p.queue];assert.equal(new Set(cards.map(c=>c.id)).size,8);assert.deepEqual(cards.map(c=>c.skill).sort(),[...p.deck].sort());assert.ok(p.hp>=0&&p.hp<=CHARACTERS[p.character].hp);assert.ok(p.energy>=0&&p.energy<=10);if(p.position)assert.ok(hasFloor(g.map,p.position));else assert.equal(p.hp,0);}
    assert.equal(g.kills,g.players.reduce((n,p)=>n+p.kills,0));assert.ok(g.events.length<=80);
   }
   assert.ok(g.actionsStarted>10,'bots must participate');actions+=g.actionsStarted;kills+=g.kills;

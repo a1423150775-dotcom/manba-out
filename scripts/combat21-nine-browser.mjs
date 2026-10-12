@@ -7,7 +7,7 @@ await page.addInitScript(({map,skill})=>{localStorage.setItem('elbow-map-test',J
 await page.locator('[data-slot="0"]').click();const at=skill==='cover'?[0,-1]:skill==='blink'||skill==='mine'?[0,1]:skill==='hook'?[2,-2]:[1,0];const b=await page.locator(`[data-cell="${at[0]},${at[1]}"] [data-surface="top"]`).boundingBox();await page.mouse.click(b.x+b.width/2,b.y+b.height/2);await wait(()=>hero().hand[0].id===next);assert.equal(hero().queue.at(-1).id,old);assert.equal(await page.locator('[data-slot]').count(),4);
 await wait(()=>!hero().action&&!hero().movement&&!state.game.projectiles.length);
 if(skill==='elbow'){assert.equal(enemy().hp,80);assert.deepEqual(enemy().position,{q:3,r:0});}
-if(skill==='charge'){assert.deepEqual(hero().position,{q:3,r:0});assert.equal(hero().kills,1);}
+if(skill==='charge'){assert.deepEqual(hero().position,{q:3,r:0});assert.equal(enemy().hp,90);assert.deepEqual(enemy().position,{q:4,r:1});}
 if(skill==='fireball'){assert.equal(enemy().hp,60);assert.equal(hero().hp,70);}
 if(skill==='blink')assert.deepEqual(hero().position,{q:0,r:1});
 if(skill==='cover'){assert.equal(state.game.objects.filter(o=>o.kind==='cover').length,3);await page.screenshot({path:'combat21-review/cover.png'});}

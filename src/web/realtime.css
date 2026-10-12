@@ -46,3 +46,5 @@
 .rt-skill-list button:focus-visible,.rt-art-card:focus-visible,.rt-move-mode:focus-visible{outline:2px dashed #123d78!important;outline-offset:4px}
 @media(max-width:600px){.rt-hud .rt-skill-list button{height:76px;min-height:76px}.rt-hud .rt-status{grid-template-columns:minmax(0,1fr) 50px}}
 @media(max-height:500px) and (orientation:landscape){.rt-hud .rt-skill-list button{height:55px;min-height:55px}.rt-hud .rt-skill-list small{display:none}}
+
+.rt-skill-list button{position:relative}.rt-hotkey{position:absolute;right:5px;top:4px;font:700 12px system-ui;color:#e7f5ff;background:#263f58;border-radius:4px;padding:1px 4px;pointer-events:none}

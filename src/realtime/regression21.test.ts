@@ -5,7 +5,7 @@ import {decideBots} from './bots';
 import {BUILTIN_MAPS,validateMap} from './maps';
 import {world,trajectories,firstCollision} from './space';
 const players=[{id:'a',name:'a',color:'red'},{id:'b',name:'b',color:'blue'}];
-function game(){const g=createArena(players);g.players[0].position={q:0,r:0};g.players[1].position={q:1,r:0};g.players.forEach(p=>p.energy=10);g.springs=[];g.boxes=[];return g;}
+function game(){const g=createArena(players);g.players[0].position={q:0,r:0};g.players[1].position={q:1,r:0};g.players.forEach(p=>p.energy=10);g.springs=[];g.boxes=[];g.objects=[];g.obstacles=[];return g;}
 function equip(g:Arena,skill:SkillId){g.players[0].hand[0].skill=skill;return{slot:0,instanceId:g.players[0].hand[0].id};}
 it('runtime seat fields are never copied into fighter network state',()=>{const g=createArena([{...players[0],token:'TEST-SECRET',socketId:'private',observer:false} as Setup,players[1]]);expect(JSON.stringify(g)).not.toContain('TEST-SECRET');expect(g.players[0]).not.toHaveProperty('socketId');});
 it('full sixteen casts preserve exact instance cycle with repeats',()=>{const g=createArena(players.map(p=>({...p,deck:Array(8).fill('basic')})));g.players[0].position={q:0,r:0};g.players[1].position={q:4,r:0};const p=g.players[0],hand=p.hand.map(c=>c.id),queue=p.queue.map(c=>c.id);for(let i=0;i<16;i++){p.energy=10;const slot=i%4,used=hand[slot];hand[slot]=queue.shift()!;queue.push(used);expect(useHandCard(g,'a',{slot,instanceId:p.hand[slot].id,targetId:'b'}).ok).toBe(true);expect(p.hand.map(c=>c.id)).toEqual(hand);expect(p.queue.map(c=>c.id)).toEqual(queue);advanceArena(g,g.now+300);}expect(new Set([...p.hand,...p.queue].map(c=>c.id)).size).toBe(8);});

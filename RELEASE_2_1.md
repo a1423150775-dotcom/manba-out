@@ -6,7 +6,7 @@
 
 本地服务：http://localhost:5180/?mode=realtime 。刷新旧页面；协议版本4会拒绝旧前端。单人测试 → 配置角色、8张卡 → 开始。9种正式技能全部开放且允许重复；4张手牌+4张队列。普通移动独立，1能量、1秒、50%切逻辑格。
 
-单击卡牌选目标；点格或人物立即施法。320ms内再次点击同一卡牌实例触发速放；慢速再次单击取消。ESC、右键或移动图标也取消。双击不重复提交，等待ACK期间不发送第二个请求。地雷、掩体、闪现没有危险的随机速放，需要手动选格；掩体可选择方向，弓箭可选高/低弹道。所有拒绝均显示原因。
+Q/W/E/R使用对应当前手牌槽的双击速放入口；忽略输入焦点和按键重复。单击卡牌选目标；点格或人物立即施法。320ms内再次点击同一卡牌实例触发速放；慢速再次单击取消。ESC、右键或移动图标也取消。双击不重复提交，等待ACK期间不发送第二个请求。地雷、掩体、闪现没有危险的随机速放，需要手动选格；掩体可选择方向，弓箭可选高/低弹道。所有拒绝均显示原因。
 
 ## 九张正式卡
 
@@ -16,7 +16,7 @@
 |大运|3|0.6s|沿六方向3格，执行0.9s|每个撞击玩家一次10伤害/晕0.5s；带动前方玩家；结束固定顺时针60°甩1格；每墙10伤害|
 |火球|4|2s|最远4格，飞行0.5s|中心40/周围30，伤害自己、玩家和障碍；独立飞行|
 |闪现|2|0.5s|1～3格|忽略路径，仅验证锁定落点；服务器瞬移|
-|速凝掩体|2|0.5s|中心1～2格，沿所选轴三连格|各10HP，高1；永久；三格全部合法才生成|
+|速凝掩体|2|0.5s|中心1～2格，沿所选轴三连格|各10HP，高1；每秒损耗2HP，无外伤5秒消失；三格全部合法才生成|
 |地雷|3|0.5s|1～2格|10HP，高0.1，每秒-2HP；踩踏或归零爆炸50/10，可连锁|
 |钩锁|3|0.5s|1～3格|5伤害/晕1s，无阻挡时0.4s拉至面前；不重叠|
 |平A|1|0.3s|相邻1格|20伤害，可打障碍，无控制|
@@ -58,7 +58,7 @@ Bot使用与真人相同的useHandCard和requestMovement；只能选择当前4�
 
 ## 实际验证与限制
 
-详细结果见TEST_REPORT.md，实际截图与JSON位于combat21-review。193项自动化测试通过（包含保留的2.0归档和Legacy）；2.1专用54项。不是将过时数值测试删除，旧规则在v20继续运行，新规则有单独断言。
+详细结果见TEST_REPORT.md，实际截图与JSON位于combat21-review。209项自动化测试通过（包含保留的2.0归档和Legacy）；2.1专用70项。不是将过时数值测试删除，旧规则在v20继续运行，新规则有单独断言。
 
 Chrome真实浏览器的桌面/触摸模拟、独立第二客户端和生产Socket.IO完成验证；不是两台真实设备的公网测试。未验证Android真机、iOS Safari或本轮SakuraFrp外网链路。SVG为轻量示意，不提供完整3D物理渲染/材质；近距离多人昵称仍可能较拥挤，可用跟随放大。压力模拟为加速逻辑运行，不代表长时间实际网络负载或内存泄漏认证。旧2.0专用浏览器脚本保留为历史流程（旧卡牌参数已经退役），2.1请用新增命令。
 
@@ -76,3 +76,32 @@ node scripts/combat21-editor-browser.mjs
 npm run test:mobile
 npm run simulate:realtime
 npm run simulate:maps
+
+## 本轮体验修复文件清单
+
+- `src/realtime/config.ts`
+- `src/realtime/engine.ts`
+- `src/realtime/bots.ts`
+- `src/realtime/maps.ts`
+- `src/realtime/combat21.test.ts`
+- `src/realtime/regression21.test.ts`
+- `src/realtime/experience21.test.ts`
+- `src/web/RealtimeApp.tsx`
+- `src/web/RealtimeBoard.tsx`
+- `src/web/BattleEffects.tsx`
+- `src/web/SpringModels.tsx`
+- `src/web/MapEditor.tsx`
+- `src/web/realtime.css`
+- `src/web/boardProjection.test.ts`
+- `maps/classic.json`
+- `scripts/combat21-nine-browser.mjs`
+- `scripts/realtime-simulate.ts`
+- `scripts/experience21-browser.mjs`
+- `package.json`
+- `README.md`
+- `GAME_RULES.md`
+- `TODO.md`
+- `TEST_REPORT.md`
+- `RELEASE_2_1.md`
+
+新增验证入口：npm run test:2.1:experience。掩体原本每单元就是10HP，本轮补全自然衰减；火球与地雷的范围对象伤害未复现缺陷，保留原伤害接口并添加实际浏览器回归。

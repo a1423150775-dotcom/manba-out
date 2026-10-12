@@ -26,8 +26,9 @@
     "test:maps:touch": "node scripts/maps-touch.mjs",
     "simulate:maps": "tsx scripts/maps-simulate.ts",
     "export:maps": "tsx scripts/export-maps.ts",
-    "test:2.1": "vitest run src/realtime/space.test.ts src/realtime/combat21.test.ts src/realtime/regression21.test.ts",
+    "test:2.1": "vitest run src/realtime/space.test.ts src/realtime/combat21.test.ts src/realtime/regression21.test.ts src/realtime/experience21.test.ts",
     "test:2.1:browser": "node scripts/combat21-browser.mjs && node scripts/combat21-nine-browser.mjs",
+    "test:2.1:experience": "node scripts/experience21-browser.mjs",
     "test:2.1:network": "node scripts/combat21-network.mjs"
   },
   "dependencies": {

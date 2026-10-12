@@ -11,7 +11,7 @@ export type ActiveAction=Intent & {seq:number;start:number;hitAt:number;end:numb
 export type CardInstance={id:string;skill:SkillId};
 export type Fighter={id:string;name:string;color:string;character:CharacterId;deck:SkillId[];hand:CardInstance[];queue:CardInstance[];bot?:Difficulty;botMode:BotMode;position:Hex|null;motion?:{at:number;path:Hex[];duration?:number};spawn:Hex;hp:number;energy:number;nextEnergy:number;stunnedUntil:number;respawnAt:number|null;action:ActiveAction|null;movement:ActiveAction|null;forced:ActiveAction|null;score:number;kills:number;assists:number;deaths:number;coins:number;nextThink:number;previous:Hex|null;lastAttacker:string|null;lastHit:number;nextBuy:number;carriedBy:string|null;contributors:Record<string,number>};
 export type Setup=Pick<Fighter,'id'|'name'|'color'> & Partial<Pick<Fighter,'character'|'deck'|'bot'>>;
-export type Destructible={id:string;kind:'stone'|'cover'|'mine';at:Hex;hp:number;maxHp:number;height:number;owner:string|null;created:number};
+export type Destructible={id:string;kind:'stone'|'cover'|'mine';at:Hex;hp:number;maxHp:number;height:number;owner:string|null;created:number;decayedAt?:number};
 export type Projectile=Ballistic & {id:string;kind:'arrow'|'fireball';owner:string;start:number;end:number;at:Hex;from:Hex};
 export type Visual={id:number;kind:string;at:Hex;from?:Hex;start:number;end:number;radius?:number};
 export type Arena={map:ArenaMap;matchId:string;now:number;seed:number;rng:number;seq:number;phase:'playing'|'finished';players:Fighter[];springs:{id:string;at:Hex;direction:number;owner:string|null;expires:number|null}[];obstacles:Hex[];objects:Destructible[];projectiles:Projectile[];visuals:Visual[];boxes:Hex[];shop:Hex|null;nextResources:number;duration:number;pausedBots:boolean;events:{id:number;at:number;text:string}[];eventId:number;actionsStarted:number;actionsHit:number;kills:number};
@@ -49,7 +49,7 @@ export function explode(g:Arena,at:Hex,center:number,ring:number,owner:string,ki
 type Chain={source:string|null;used:Set<string>;count:number};
 function entered(g:Arena,p:Fighter,chain:Chain):boolean{
  if(!p.position)return false;for(const mine of [...g.objects])if(mine.kind==='mine'&&p.position&&equal(mine.at,p.position))damageObject(g,mine,mine.hp,mine.owner||p.id);
- if(!p.position)return true;const trap=g.springs.find(t=>equal(t.at,p.position!));if(trap&&!chain.used.has(trap.id)&&chain.count<C.chainLimit){chain.used.add(trap.id);chain.count++;interrupt(p);chain.source ||= trap.owner;push(g,p,trap.direction,2,chain);return true;}
+ if(!p.position)return true;const trap=g.springs.find(t=>equal(t.at,p.position!));if(trap&&!chain.used.has(trap.id)&&chain.count<C.chainLimit){chain.used.add(trap.id);chain.count++;visual(g,'spring',trap.at);interrupt(p);chain.source ||= trap.owner;push(g,p,trap.direction,2,chain);return true;}
  const i=g.boxes.findIndex(at=>p.position&&equal(at,p.position));if(i>=0){g.boxes.splice(i,1);p.hp=Math.min(CHARACTERS[p.character].hp,p.hp+20);p.energy=Math.min(C.maxEnergy,p.energy+2);p.coins++;log(g,`${p.name}拾取盲盒`);}return false;
 }
 export function push(g:Arena,p:Fighter,direction:number,steps:number,chain:Chain={source:null,used:new Set(),count:0}){
@@ -138,6 +138,8 @@ export function stepArena(g:Arena){if(g.phase!=='playing')return;g.now+=C.tickMs
  for(const p of g.players)if(p.carriedBy&&!g.players.some(c=>c.id===p.carriedBy&&c.movement?.skill==='charge'))p.carriedBy=null;
  for(const p of g.players.filter(p=>p.action).sort((a,b)=>a.action!.seq-b.action!.seq)){const a=p.action;if(a&&g.now>=a.hitAt){p.action=null;resolve(g,p,a);}}
  projectiles(g);
+ // Cover decay uses elapsed authoritative time per cell; damage and aging share HP.
+ for(const o of [...g.objects])if(o.kind==='cover'){const elapsed=g.now-(o.decayedAt??o.created);o.decayedAt=g.now;if(elapsed>0)damageObject(g,o,C.coverDecay*elapsed/1000,'environment');}
  for(const o of [...g.objects])if(o.kind==='mine'&&o.created<g.now)damageObject(g,o,C.mineDecay*C.tickMs/1000,o.owner||'environment');
  g.visuals=g.visuals.filter(v=>v.end>g.now).slice(-128);
  if(g.now>=g.nextResources){const cells=g.map.floors.filter(h=>free(g,h)&&!g.springs.some(s=>equal(s.at,h))&&!g.boxes.some(b=>equal(b,h))&&!(g.shop&&equal(g.shop,h)));if(g.boxes.length<4&&cells.length)g.boxes.push(cells[Math.floor(random(g)*cells.length)]);for(const p of g.players)p.coins=Math.min(12,p.coins+1);g.nextResources+=C.resourceMs;}

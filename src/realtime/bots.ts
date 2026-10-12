@@ -9,6 +9,8 @@ export function decideBots(g:Arena){if(g.phase!=='playing'||g.pausedBots)return;
  else if(c.skill==='mine'){const at=DIRS.map(d=>add(p.position!,d)).filter(h=>free(g,h)&&!g.objects.some(o=>equal(o.at,h))&&!g.springs.some(s=>equal(s.at,h))).sort((a,b)=>distance(a,target.position!)-distance(b,target.position!))[0];if(at)intent={skill:c.skill,at};}
  else if(c.skill==='cover'){for(const d of DIRS){const at=add(p.position,d);for(let direction=0;direction<3;direction++){const cells=[at,add(at,DIRS[direction]),add(at,DIRS[direction+3])];if(cells.every(h=>free(g,h)&&!g.objects.some(o=>equal(o.at,h))&&!g.springs.some(s=>equal(s.at,h)))){intent={skill:c.skill,at,direction};break;}}if(intent)break;}}
  else if(c.skill==='blink'&&!p.movement){const hurt=p.hp<CHARACTERS[p.character].hp*.4;const at=g.map.floors.filter(h=>free(g,h)&&distance(p.position!,h)>0&&distance(p.position!,h)<=3).sort((a,b)=>(hurt?-1:1)*(distance(a,target.position!)-distance(b,target.position!)))[0];if(at)intent={skill:c.skill,at};}
+ // Break a nearby fragile wall with the same authoritative hand interface.
+ if(!intent&&['elbow','basic'].includes(c.skill)){const wall=g.objects.find(o=>o.kind==='cover'&&distance(p.position!,o.at)===1);if(wall)intent={skill:c.skill,targetId:wall.id};}
  if(intent){const r=useHandCard(g,p.id,{...intent,slot,instanceId:c.id});if(r.ok){used=true;break;}}}
  if(!used&&p.botMode!=='attack'&&!p.movement&&!p.carriedBy&&p.energy>=1){const near=distance(p.position,target.position!)===1;if(near&&p.hand.some(c=>['elbow','basic'].includes(c.skill))&&p.botMode!=='move')continue;const at=pathTo(g,p,target.position!,p.hp<25&&p.bot!=='easy');if(at)requestMovement(g,p.id,at);}
 }}

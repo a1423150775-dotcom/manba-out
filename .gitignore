@@ -23,3 +23,4 @@ data/control.json
 .codex/
 .agents/
 .vs/
+.npm-*-cache/

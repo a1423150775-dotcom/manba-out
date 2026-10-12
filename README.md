@@ -135,3 +135,9 @@ node .\scripts\local-server-smoke.mjs
 - 旧文档是历史设计记录；当前参数以`config.ts`、`modes.ts`和本报告为准。
 
 公开源码不包含凭据、个人日志、node_modules、构建输出和便携EXE。第三方依赖许可证见各包；便携构建附带运行时及依赖许可声明。
+
+## 本轮部署验收与依赖审计
+
+已从GitHub重新Clone，使用空npm缓存安装、构建、334项测试，以及Chrome真人/Bot/观众双模式短局均通过；GUI构建脚本和便携开服/停止链路通过。GUI按钮受桌面激活失败限制未实测。详见`tower-review/clean-clone.json`。
+
+开发依赖已更新Vite6.4.4、concurrently9.2.5、Vitest3.2.7。生产依赖审计0项；Vitest工具链仍有3条开发依赖告警（2critical、1moderate），需要跨主版本升级，本轮没有强制升级。不要公开开发/测试服务器。

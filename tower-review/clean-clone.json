@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "30a82ce538c649e90d63e77133331ad7225d81ba",
+  "clone": "GitHub HTTPS main into new directory",
+  "install": "npm ci using a new empty cache:237 packages",
+  "tests": "39 files /334 tests passed",
+  "build": "production frontend+server successful",
+  "browser": "two human+3Bot+observer30s matches (moba/siege),6Bot,2D/2.5D/mobile/editor passed",
+  "gui": "README PowerShell build script produced EXE and complete portable server ZIP",
+  "portable": "fresh-clone bundled runtime: dualSocket create/join, authenticated stop exit0",
+  "local": "serve starts loopback, port conflict clear, exit releases port",
+  "limitations": "GUI window activation unavailable; GUI button clicks not verified. No real mobile hardware/public network test."
+}

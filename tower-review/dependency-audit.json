@@ -1,0 +1,17 @@
+{
+  "productionVulnerabilities": 0,
+  "development": {
+    "info": 0,
+    "low": 0,
+    "moderate": 1,
+    "high": 0,
+    "critical": 2,
+    "total": 3
+  },
+  "remaining": [
+    "@vitest/mocker",
+    "tinypool",
+    "vitest"
+  ],
+  "note": "Same-major Vite/concurrently/Vitest updates applied; remaining Vitest toolchain advisories require a major upgrade, not silently forced. Do not expose dev/test servers."
+}

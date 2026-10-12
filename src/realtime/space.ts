@@ -9,7 +9,7 @@ export const stepHeight=(map:ArenaMap,a:Hex,b:Hex)=>Math.abs(elevation(map,a)-el
 export const positionAt=(shot:Ballistic,t:number):Vec=>({x:shot.origin.x+shot.velocity.x*t,y:shot.origin.y+shot.velocity.y*t,z:shot.origin.z+shot.velocity.z*t-(shot.gravity??C.gravity)*t*t/2});
 export function trajectories(origin:Vec,target:Vec):Ballistic[]{
  const dx=target.x-origin.x,dy=target.y-origin.y,d=Math.hypot(dx,dy),z=target.z-origin.z,v=C.arrowSpeed,g=C.gravity;
- if(d<1e-6)return[];const disc=v**4-g*(g*d*d+2*z*v*v);if(disc<0)return[];
+ if(![...Object.values(origin),...Object.values(target),d].every(Number.isFinite)||d<1e-6)return[];const raw=v**4-g*(g*d*d+2*z*v*v);if(raw < -1e-9)return[];const disc=Math.max(0,raw);
  return [...new Set([Math.atan((v*v-Math.sqrt(disc))/(g*d)),Math.atan((v*v+Math.sqrt(disc))/(g*d))])].map(angle=>({origin:{...origin},velocity:{x:dx/d*v*Math.cos(angle),y:dy/d*v*Math.cos(angle),z:v*Math.sin(angle)}}));
 }
 function roots(a:number,b:number,c:number){if(Math.abs(a)<1e-12)return Math.abs(b)<1e-12?[]:[-c/b];const d=b*b-4*a*c;if(d<0)return[];return[(-b-Math.sqrt(d))/(2*a),(-b+Math.sqrt(d))/(2*a)];}

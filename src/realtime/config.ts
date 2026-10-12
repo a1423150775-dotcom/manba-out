@@ -17,7 +17,7 @@ cover:{name:'速凝掩体',description:'0.5秒前摇，1～2格放置三连墙�
 mine:{name:'地雷',description:'0.5秒前摇，1～2格放置10HP地雷；每秒失去2HP，踩踏或归零爆炸50/10伤害',energyCost:3,windup:500,recovery:0,targetType:'cell',range:2,effect:'mine',objectHp:10,damage:50,ringDamage:10},
 hook:{name:'钩锁',description:'0.5秒前摇，1～3格无遮挡目标5伤害、晕1秒，0.4秒拉至面前',energyCost:3,windup:500,recovery:0,targetType:'player',range:3,effect:'hook',damage:5,stun:1000},
 basic:{name:'平A',description:'0.3秒前摇，相邻玩家或障碍20伤害，无控制',energyCost:1,windup:300,recovery:0,targetType:'player',range:1,effect:'hit',damage:20},
-arrow:{name:'弓箭',description:'0.7秒前摇，固定初速抛体；首个有效目标20伤害，可切换高低弹道，不命中地雷',energyCost:2,windup:700,recovery:0,targetType:'cell',range:16,effect:'arrow',damage:20},
+arrow:{name:'弓箭',description:'0.7秒前摇，固定初速抛体；首个有效目标20伤害，可切换高低弹道，不命中地雷',energyCost:2,windup:700,recovery:0,targetType:'cell',range:RT_CONFIG.arrowSpeed**2/RT_CONFIG.gravity,effect:'arrow',damage:20},
 } satisfies Record<string,Skill>;
 export type SkillId=keyof typeof SKILLS;
 export const DEFAULT_DECK:SkillId[]=['elbow','fireball','blink','arrow','charge','cover','mine','hook'];

@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "intent": {
+        "at": {
+          "q": 3,
+          "r": 0
+        },
+        "arc": "low"
+      },
+      "reason": "目标超出弓箭射程"
+    },
+    {
+      "intent": {
+        "at": {
+          "q": 3,
+          "r": 0
+        },
+        "arc": "high"
+      },
+      "reason": "目标超出弓箭射程"
+    },
+    {
+      "intent": {
+        "at": {
+          "q": 8,
+          "r": 0
+        },
+        "arc": "low"
+      },
+      "reason": "目标超出弓箭射程"
+    },
+    {
+      "intent": {
+        "at": {
+          "q": 8,
+          "r": 0
+        },
+        "arc": "high"
+      },
+      "reason": "目标超出弓箭射程"
+    },
+    {
+      "intent": {
+        "auto": true
+      },
+      "reason": "射程内没有可命中目标"
+    }
+  ],
+  "unchangedHand": true,
+  "noEnergyCharge": true,
+  "noWindup": true
+}

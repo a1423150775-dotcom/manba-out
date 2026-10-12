@@ -1,0 +1,7 @@
+{
+  "results": [
+    "2D desktop: outside hidden; enter enemy range highlighted; clickable through warning; exit hidden",
+    "2.5D desktop: outside hidden; enter enemy range highlighted; clickable through warning; exit hidden",
+    "2.5D touch: outside hidden; enter enemy range highlighted; clickable through warning; exit hidden"
+  ]
+}

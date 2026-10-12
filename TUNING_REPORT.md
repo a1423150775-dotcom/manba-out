@@ -36,3 +36,9 @@ Chrome两场90秒真人+3Bot+独立观众对局通过，6Bot观战、2D/2.5D、�
 ![扩大MOBA](tuning-review/moba.png)
 ![扩大城堡](tuning-review/siege.png)
 网络回归也通过：双Socket.IO客户端同步小兵、建筑瞄准和投射物；观众不能施法，重连保持观众身份，结束后小兵状态不再变化。测试时长由30秒延长到60秒以覆盖新首波。
+
+## 防御塔范围高亮
+
+进入敌方存活防御塔6格索敌范围时，客户端在对应地板上显示淡橙色区域和边界；离开、死亡或塔被摧毁后消失。观众跟随某个单位时，按该单位阵营显示敌塔范围。仅提示几何索敌范围，实际射击仍受地形/障碍约束。高亮位于地板之后、角色和特效之前，pointer-events=none，不拦截操作。
+
+改动：`src/web/TowerRangeWarning.tsx`、`RealtimeBoard.tsx`、`boardProjection.ts`；没有服务端规则变化。类型检查/生产构建通过，`scripts/tower-warning-browser.mjs`实测2D桌面、2.5D桌面与触摸的进入/离开、友方塔不提示、高亮不阻挡点击。截图与结果位于`tuning-review/tower-warning-*`。

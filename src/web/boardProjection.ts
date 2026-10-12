@@ -10,5 +10,5 @@ export function boardProjection(style:RenderStyle, floors:ArenaMap['floors']) {
  const sides=(h:Hex)=>{const v=vertices(h),depth=18+(heights.get(key(h))??0)*22;return [0,1,2].map(i=>{const a=v[i],b=v[(i+1)%6];return `${a.x},${a.y} ${b.x},${b.y} ${b.x},${b.y+depth} ${a.x},${a.y+depth}`;});};
  // Direction is projected on the ground plane; neighboring terrain height must not rotate it.
  const directionAngle=(d:number)=>{const h=DIRS[d];return Math.atan2(69*h.r*tilt,46*Math.sqrt(3)*(h.q+h.r/2))*180/Math.PI+90;};
- return {point,polygon,sides,directionAngle,tilt};
+ return {point,vertices,polygon,sides,directionAngle,tilt};
 }

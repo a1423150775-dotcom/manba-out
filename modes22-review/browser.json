@@ -1,0 +1,13 @@
+{
+  "results": [
+    "FFA fixed2 equipment save; only Laoda; exactly2 battle slots; disabled E; no queue preview",
+    "1human+1Bot default MOBA map with host-assigned spawns;25 real basic attacks reduce500HP core to0; fixed1 never cycles; blue victory",
+    "mobile390 siege2D/2.5D plus320,844landscape,768tablet:4 fixedslots, touch selection/cancel, no horizontal overflow",
+    "castle real UI high-to-low elbow fizzles; ordinary drop at midpoint hits5HP and pushes1cell; server positions match",
+    "1human+5Bot3v3 default MOBA live match with cycle4/8; independent from fixed rules",
+    "two independent Chrome sessions2human+2Bot2v2; ally elbow displacement synchronized, no stun/no30 damage; tower remains independently active",
+    "6Bot3v3 MOBA live battle;host spectator;no combat slots",
+    "editor mouse adds tower/heal floor; castle2.5D stairs/drop preview; save/export/import retains buildings, teamspawns, heights"
+  ],
+  "errors": []
+}

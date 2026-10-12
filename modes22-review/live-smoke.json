@@ -1,0 +1,19 @@
+{
+  "port": 5180,
+  "health": {
+    "ok": true,
+    "rooms": 0
+  },
+  "version": {
+    "buildId": "20261012075552528"
+  },
+  "checked": [
+    "create room",
+    "moba compatible map",
+    "fixed2",
+    "only Laoda",
+    "leave room",
+    "editor JSON import/2.5D"
+  ],
+  "at": "2026-10-12T07:57:47.688Z"
+}

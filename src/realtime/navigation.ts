@@ -1,7 +1,7 @@
 import {RT_CONFIG} from './config';
 import {DIRS,add,distance,equal,key,type Hex} from '../core/hex';
 import {hasFloor} from './maps';
-import {stepHeight} from './space';
+import {moveHeight} from './space';
 import type {Arena,Fighter} from './engine';
 export type Navigation={kind:'point'|'follow';at?:Hex;targetId?:string;path:Hex[];nextPlan:number;blockedSince?:number;status:string};
 export type NavigationRequest={kind:'step';at:Hex}|{kind:'point';at:Hex}|{kind:'follow';targetId:string}|{kind:'stop'};
@@ -11,7 +11,7 @@ export function findPath(g:Arena,p:Fighter,target:Hex,adjacent=false):Hex[]|null
  if(!p.position)return null;const queue=[{at:p.position,path:[] as Hex[],cost:0}],best=new Map([[key(p.position),0]]);
  while(queue.length){queue.sort((a,b)=>a.cost-b.cost);const n=queue.shift()!;if(n.cost!==best.get(key(n.at)))continue;
  if(distance(n.at,target)<=(adjacent?1:0))return n.path;
- for(const dir of DIRS){const h=add(n.at,dir);if(!hasFloor(g.map,h)||!stepHeight(g.map,n.at,h)||blocked(g,p,h))continue;
+ for(const dir of DIRS){const h=add(n.at,dir);if(!hasFloor(g.map,h)||!moveHeight(g.map,n.at,h)||blocked(g,p,h))continue;
  const cost=n.cost+1+(g.objects.some(o=>o.kind==='mine'&&equal(o.at,h))?6:0)+(g.springs.some(s=>equal(s.at,h))?3:0);if(cost>=(best.get(key(h))??Infinity))continue;best.set(key(h),cost);queue.push({at:h,path:[...n.path,h],cost});}
  }return null;
 }

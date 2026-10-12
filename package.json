@@ -1,6 +1,6 @@
 {
   "name": "bad-friends-arena",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -42,7 +42,11 @@
     "test:arrow-range:network": "node scripts/arrow-range-network.mjs",
     "test:cover": "vitest run src/realtime/cover.test.ts",
     "test:cover:browser": "node scripts/cover-browser.mjs",
-    "test:cover:network": "node scripts/cover-network.mjs"
+    "test:cover:network": "node scripts/cover-network.mjs",
+    "test:2.2": "vitest run src/realtime/modes22.test.ts src/server/realtime-slots.test.ts",
+    "test:2.2:network": "node scripts/modes22-network.mjs",
+    "test:2.2:browser": "node scripts/modes22-browser.mjs",
+    "simulate:2.2": "tsx scripts/modes22-simulate.ts"
   },
   "dependencies": {
     "express": "5.1.0",

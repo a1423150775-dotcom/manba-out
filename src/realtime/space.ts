@@ -6,6 +6,7 @@ export type Ballistic={origin:Vec;velocity:Vec;gravity?:number};
 export const world=(h:Hex)=>({x:h.q+h.r/2,y:Math.sqrt(3)/2*h.r});
 export const elevation=(map:ArenaMap,h:Hex)=>map.floors.find(f=>key(f)===key(h))?.height??0;
 export const stepHeight=(map:ArenaMap,a:Hex,b:Hex)=>Math.abs(elevation(map,a)-elevation(map,b))<=C.maxStep;
+export const moveHeight=(map:ArenaMap,a:Hex,b:Hex)=>stepHeight(map,a,b)||elevation(map,a)-elevation(map,b)>=1;
 export const positionAt=(shot:Ballistic,t:number):Vec=>({x:shot.origin.x+shot.velocity.x*t,y:shot.origin.y+shot.velocity.y*t,z:shot.origin.z+shot.velocity.z*t-(shot.gravity??C.gravity)*t*t/2});
 export function trajectories(origin:Vec,target:Vec):Ballistic[]{
  const dx=target.x-origin.x,dy=target.y-origin.y,d=Math.hypot(dx,dy),z=target.z-origin.z,v=C.arrowSpeed,g=C.gravity;

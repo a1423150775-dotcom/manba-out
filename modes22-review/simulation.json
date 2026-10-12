@@ -1,0 +1,405 @@
+{
+  "reports": [
+    {
+      "mode": "ffa",
+      "n": 2,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 447,
+      "kills": 8,
+      "minCore": 500,
+      "cores": [],
+      "positions": [
+        {
+          "q": 6,
+          "r": -3
+        },
+        {
+          "q": -6,
+          "r": 0
+        }
+      ]
+    },
+    {
+      "mode": "ffa",
+      "n": 2,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 417,
+      "kills": 7,
+      "minCore": 500,
+      "cores": [],
+      "positions": [
+        {
+          "q": -1,
+          "r": 6
+        },
+        {
+          "q": 6,
+          "r": -6
+        }
+      ]
+    },
+    {
+      "mode": "ffa",
+      "n": 6,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 1396,
+      "kills": 40,
+      "minCore": 500,
+      "cores": [],
+      "positions": [
+        null,
+        {
+          "q": 1,
+          "r": -5
+        },
+        {
+          "q": 1,
+          "r": -4
+        },
+        {
+          "q": 2,
+          "r": 0
+        },
+        {
+          "q": -2,
+          "r": 3
+        },
+        {
+          "q": -2,
+          "r": 2
+        }
+      ]
+    },
+    {
+      "mode": "ffa",
+      "n": 6,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 1259,
+      "kills": 89,
+      "minCore": 500,
+      "cores": [],
+      "positions": [
+        {
+          "q": 3,
+          "r": -2
+        },
+        null,
+        null,
+        {
+          "q": -3,
+          "r": -1
+        },
+        {
+          "q": 1,
+          "r": -1
+        },
+        {
+          "q": 3,
+          "r": 2
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "n": 2,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 933,
+      "kills": 7,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "minCore": 320,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 320
+        },
+        {
+          "team": "red",
+          "hp": 460
+        }
+      ],
+      "positions": [
+        {
+          "q": -5,
+          "r": 1
+        },
+        {
+          "q": 4,
+          "r": -6
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "n": 2,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 557,
+      "kills": 16,
+      "winner": "red",
+      "reason": "核心被摧毁",
+      "minCore": 20,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 250
+        }
+      ],
+      "positions": [
+        {
+          "q": -6,
+          "r": 4
+        },
+        {
+          "q": -6,
+          "r": 1
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "n": 6,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 2903,
+      "kills": 62,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "minCore": 380,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 380
+        },
+        {
+          "team": "red",
+          "hp": 500
+        }
+      ],
+      "positions": [
+        {
+          "q": -3,
+          "r": 1
+        },
+        {
+          "q": 0,
+          "r": 1
+        },
+        {
+          "q": 1,
+          "r": -6
+        },
+        {
+          "q": 1,
+          "r": -2
+        },
+        {
+          "q": -4,
+          "r": 0
+        },
+        {
+          "q": 4,
+          "r": -1
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "n": 6,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 2524,
+      "kills": 144,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "minCore": 230,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 230
+        },
+        {
+          "team": "red",
+          "hp": 320
+        }
+      ],
+      "positions": [
+        {
+          "q": 0,
+          "r": 0
+        },
+        {
+          "q": 1,
+          "r": -1
+        },
+        {
+          "q": 0,
+          "r": 1
+        },
+        {
+          "q": 0,
+          "r": -2
+        },
+        null,
+        {
+          "q": 4,
+          "r": 0
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "n": 2,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 442,
+      "kills": 4,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "minCore": 440,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 440
+        }
+      ],
+      "positions": [
+        {
+          "q": -4,
+          "r": 0
+        },
+        null
+      ]
+    },
+    {
+      "mode": "siege",
+      "n": 2,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 227,
+      "kills": 9,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "minCore": 30,
+      "cores": [],
+      "positions": [
+        {
+          "q": 4,
+          "r": 1
+        },
+        {
+          "q": 3,
+          "r": 1
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "n": 6,
+      "rule": {
+        "type": "cycle",
+        "slotCount": 4
+      },
+      "actions": 1344,
+      "kills": 28,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "minCore": 390,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 390
+        }
+      ],
+      "positions": [
+        {
+          "q": 5,
+          "r": -1
+        },
+        {
+          "q": 0,
+          "r": 2
+        },
+        {
+          "q": 1,
+          "r": 1
+        },
+        {
+          "q": -3,
+          "r": 5
+        },
+        {
+          "q": -2,
+          "r": 1
+        },
+        {
+          "q": -3,
+          "r": 0
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "n": 6,
+      "rule": {
+        "type": "fixed",
+        "slotCount": 2
+      },
+      "actions": 541,
+      "kills": 28,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "minCore": 20,
+      "cores": [],
+      "positions": [
+        {
+          "q": 2,
+          "r": -1
+        },
+        null,
+        {
+          "q": 0,
+          "r": 0
+        },
+        {
+          "q": 3,
+          "r": 0
+        },
+        null,
+        {
+          "q": 3,
+          "r": 1
+        }
+      ]
+    }
+  ],
+  "wallMs": 14783.819200000002,
+  "heapBefore": 9233800,
+  "heapAfter": 46512872,
+  "note": "Accelerated server simulation, not real devices or a leak proof"
+}

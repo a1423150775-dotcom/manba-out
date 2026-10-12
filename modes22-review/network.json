@@ -1,0 +1,7 @@
+{
+  "results": [
+    "host-only independent mode/map/skill settings; fixed2 shared state; laoda-only validation; 1.5 cost/0.2 windup/30 damage; duplicate request executes once",
+    "reconnect retains fixed skills and identity; restart retains config; switching back restores saved8 deck",
+    "4v2 siege;6 bots; unique team spawns; spectator host cannot act; fixed1 Bot actions"
+  ]
+}

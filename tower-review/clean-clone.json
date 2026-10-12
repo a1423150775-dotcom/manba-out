@@ -8,5 +8,7 @@
   "gui": "README PowerShell build script produced EXE and complete portable server ZIP",
   "portable": "fresh-clone bundled runtime: dualSocket create/join, authenticated stop exit0",
   "local": "serve starts loopback, port conflict clear, exit releases port",
-  "limitations": "GUI window activation unavailable; GUI button clicks not verified. No real mobile hardware/public network test."
+  "limitations": "GUI window activation unavailable; GUI button clicks not verified. No real mobile hardware/public network test.",
+  "finalCodeCommit": "5584245f9e724265c17acb4497fce9acd7db18ad",
+  "finalVerification": "Fresh GitHub clone fast-forwarded to final code; 334 tests, production build and actual browser two completed human+3Bot matches, observer,6Bot,editor passed"
 }

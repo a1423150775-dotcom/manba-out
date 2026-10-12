@@ -1,0 +1,9 @@
+{
+  "results": [
+    "two independently authenticated clients: host/guest one-step routing and synchronized positions",
+    "same request replay executes once",
+    "navigation version rejects stale follow and stale point after cancellation",
+    "Space/cancelAll stops future steps without reversing current step",
+    "identity reconnect restores hand and position, discards old navigation and rejects stale version"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "results": [
+    "desktop 1440x1000: adjacent/far single step; double only one request; 3 continuous steps; Space pending-click cancellation; QWER selection/timeout/reselection/quickcast; arrow aim renews timeout; no timeout skill request/cycle; 2.5D follow-camera hit test; single overrides auto; follow survives timeout; stable HUD; mouse",
+    "touch 390x844: adjacent/far single step; double only one request; 3 continuous steps; Space pending-click cancellation; QWER selection/timeout/reselection/quickcast; arrow aim renews timeout; no timeout skill request/cycle; 2.5D follow-camera hit test; single overrides auto; follow survives timeout; stable HUD; pinch"
+  ],
+  "errors": []
+}

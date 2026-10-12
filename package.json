@@ -33,7 +33,10 @@
     "test:2.1:network": "node scripts/combat21-network.mjs",
     "test:2.1:revision": "vitest run src/realtime/revision21.test.ts src/server/realtime-slots.test.ts",
     "test:2.1:revision:browser": "node scripts/revision21-browser.mjs",
-    "test:2.1:revision:network": "node scripts/revision21-network.mjs"
+    "test:2.1:revision:network": "node scripts/revision21-network.mjs",
+    "test:movement-input": "vitest run src/web/battleInput.test.ts src/realtime/movementInput.test.ts src/realtime/navigation21.test.ts",
+    "test:movement-input:browser": "node scripts/movement-input-browser.mjs",
+    "test:movement-input:network": "node scripts/movement-input-network.mjs"
   },
   "dependencies": {
     "express": "5.1.0",

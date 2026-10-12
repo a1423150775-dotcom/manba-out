@@ -8,12 +8,12 @@ import {world,elevation,stepHeight,trajectories,firstCollision,positionAt,hexLin
 export type Difficulty='easy'|'normal'|'hard';
 export type BotMode='normal'|'move'|'attack'|'idle';
 export type Intent={skill:SkillId;slot?:number;targetId?:string;at?:Hex;direction?:number;arc?:'low'|'high';auto?:boolean};
-export type ActiveAction=Intent & {seq:number;start:number;hitAt:number;end:number;from:Hex;path:Hex[];step:number;resolved:boolean;shot?:Ballistic;carried?:string[]};
+export type ActiveAction=Intent & {seq:number;start:number;hitAt:number;end:number;from:Hex;path:Hex[];step:number;resolved:boolean;shot?:Ballistic;carried?:string[];blocked?:boolean;automatic?:boolean};
 export type CardInstance={id:string;skill:SkillId};
 export type BufferedInput={requestId:string;input:HandRequest;afterSeq:number;due:number;expires:number};
 export type InputResult={seq:number;requestId:string;ok:boolean;reason?:string};
 export type Fighter={moveRecoveryUntil?:number;navigation?:Navigation|null;navigationNotice?:string;buffer?:BufferedInput|null;inputResult?:InputResult;outcome?:{seq:number;at:number;ok:boolean;reason:string};id:string;name:string;color:string;character:CharacterId;deck:SkillId[];hand:CardInstance[];queue:CardInstance[];bot?:Difficulty;botMode:BotMode;position:Hex|null;motion?:{at:number;path:Hex[];duration?:number};spawn:Hex;hp:number;energy:number;nextEnergy:number;stunnedUntil:number;respawnAt:number|null;action:ActiveAction|null;movement:ActiveAction|null;forced:ActiveAction|null;score:number;kills:number;assists:number;deaths:number;coins:number;nextThink:number;previous:Hex|null;lastAttacker:string|null;lastHit:number;nextBuy:number;carriedBy:string|null;contributors:Record<string,number>};
-export type Setup=Pick<Fighter,'id'|'name'|'color'> & Partial<Pick<Fighter,'character'|'deck'|'bot'>>;
+export type Setup=Pick<Fighter,'id'|'name'|'color'> & Partial<Pick<Fighter,'character'|'deck'|'bot'|'spawn'>>;
 export type Destructible={id:string;kind:'stone'|'cover'|'mine';at:Hex;hp:number;maxHp:number;height:number;owner:string|null;created:number;decayedAt?:number};
 export type Projectile=Ballistic & {id:string;kind:'arrow'|'fireball';owner:string;start:number;end:number;at:Hex;from:Hex};
 export type Visual={id:number;kind:string;at:Hex;from?:Hex;start:number;end:number;radius?:number};
@@ -28,7 +28,7 @@ export const canStep=(g:Arena,from:Hex,to:Hex)=>hasFloor(g.map,to)&&stepHeight(g
 export function addFighter(g:Arena,s:Setup){
  if(g.players.length>=6||g.players.some(p=>p.id===s.id))throw Error('位置已满或身份重复');
  const deck=migrateDeck(s.deck||DEFAULT_DECK),character=s.character||'laoda';if(!deck||!Object.hasOwn(CHARACTERS,character))throw Error('角色或卡组无效');
- const spawn=g.map.spawns.map(s=>s.at).find(h=>free(g,h));if(!spawn)throw Error('无出生位置');
+ const spawn=s.spawn?(free(g,s.spawn)?s.spawn:undefined):g.map.spawns.map(s=>s.at).find(h=>free(g,h));if(!spawn)throw Error('无出生位置');
  const p:Fighter={id:s.id,name:s.name,color:s.color,...(s.bot?{bot:s.bot}:{}),character,deck,hand:deck.slice(0,4).map((skill,i)=>({id:`${s.id}:${i}`,skill})),queue:deck.slice(4).map((skill,i)=>({id:`${s.id}:${i+4}`,skill})),botMode:'normal',spawn,position:{...spawn},hp:CHARACTERS[character].hp,energy:C.initialEnergy,nextEnergy:g.now+C.regenMs,stunnedUntil:0,respawnAt:null,action:null,movement:null,forced:null,score:0,kills:0,assists:0,deaths:0,coins:3,nextThink:g.now+400,previous:null,lastAttacker:null,lastHit:0,nextBuy:0,carriedBy:null,contributors:{}};g.players.push(p);return p;
 }
 export function createArena(inputs:Setup[],seed=1,matchId='test',duration=C.matchMs,definition:ArenaMap=BUILTIN_MAPS[0]):Arena{
@@ -36,10 +36,10 @@ export function createArena(inputs:Setup[],seed=1,matchId='test',duration=C.matc
  const objects:Destructible[]=map.obstacles.map((at,i)=>({id:'stone'+i,kind:'stone',at,hp:100,maxHp:100,height:1,owner:null,created:0}));
  const g:Arena={map,matchId,now:0,seed,rng:seed||1,seq:0,phase:'playing',players:[],springs:map.springs.map((t,i)=>({id:'spring'+i,at:t.at,direction:t.direction,owner:null,expires:null})),obstacles:map.obstacles.map(h=>({...h})),objects,projectiles:[],visuals:[],boxes:legacy.boxes.map(b=>b.at).filter(h=>hasFloor(map,h)&&!objects.some(o=>equal(o.at,h))&&!map.springs.some(t=>equal(t.at,h))),shop:legacy.shop&&hasFloor(map,legacy.shop.at)&&!objects.some(o=>equal(o.at,legacy.shop!.at))?legacy.shop.at:null,nextResources:C.resourceMs,duration,pausedBots:false,events:[],eventId:0,actionsStarted:0,actionsHit:0,kills:0};inputs.forEach(p=>addFighter(g,p));return g;
 }
-export function interrupt(p:Fighter){p.action=null;p.movement=null;p.forced=null;}
-export function stun(g:Arena,p:Fighter,ms:number){if(!p.position)return;interrupt(p);p.stunnedUntil=Math.max(p.stunnedUntil,g.now+ms);}
+export function interrupt(p:Fighter,g?:Arena,reason='被位移打断'){if(p.action&&g)p.outcome={seq:++g.seq,at:g.now,ok:false,reason:SKILLS[p.action.skill].name+reason+'（不退款）'};p.action=null;p.movement=null;p.forced=null;}
+export function stun(g:Arena,p:Fighter,ms:number){if(!p.position)return;interrupt(p,g,'被击晕打断');p.stunnedUntil=Math.max(p.stunnedUntil,g.now+ms);}
 function credit(g:Arena,p:Fighter,source:string|null){if(source&&source!==p.id){p.lastAttacker=source;p.lastHit=g.now;p.contributors[source]=g.now;}}
-export function die(g:Arena,p:Fighter,source:string|null){if(!p.position)return;p.position=null;p.moveRecoveryUntil=0;p.navigation=null;p.navigationNotice='自动移动已取消：死亡';p.hp=0;p.energy=0;interrupt(p);p.stunnedUntil=0;p.respawnAt=g.now+C.respawnMs;p.deaths++;const killer=g.players.find(q=>q.id===source&&q.id!==p.id);if(killer){killer.kills++;killer.score+=C.killScore;g.kills++;for(const [id,time]of Object.entries(p.contributors))if(id!==killer.id&&id!==p.id&&g.now-time<=C.assistMs){const a=g.players.find(p=>p.id===id);if(a){a.assists++;a.score+=C.assistScore;}}}log(g,`${p.name}阵亡${killer?'，'+killer.name+'击杀 +2分':'（自杀或环境）'}`);}
+export function die(g:Arena,p:Fighter,source:string|null){if(!p.position)return;p.position=null;p.moveRecoveryUntil=0;p.navigation=null;p.navigationNotice='自动移动已取消：死亡';p.hp=0;p.energy=0;interrupt(p,g,'因死亡打断');p.stunnedUntil=0;p.respawnAt=g.now+C.respawnMs;p.deaths++;const killer=g.players.find(q=>q.id===source&&q.id!==p.id);if(killer){killer.kills++;killer.score+=C.killScore;g.kills++;for(const [id,time]of Object.entries(p.contributors))if(id!==killer.id&&id!==p.id&&g.now-time<=C.assistMs){const a=g.players.find(p=>p.id===id);if(a){a.assists++;a.score+=C.assistScore;}}}log(g,`${p.name}阵亡${killer?'，'+killer.name+'击杀 +2分':'（自杀或环境）'}`);}
 export function damage(g:Arena,p:Fighter,amount:number,source:string){if(!p.position)return;credit(g,p,source);p.hp=Math.max(0,p.hp-amount);if(!p.hp)die(g,p,source);}
 function visual(g:Arena,kind:string,at:Hex,from?:Hex,radius?:number){g.visuals.push({id:++g.seq,kind,at:{q:at.q,r:at.r},from,start:g.now,end:g.now+600,radius});}
 function removeObject(g:Arena,o:Destructible){g.objects=g.objects.filter(x=>x.id!==o.id);g.obstacles=g.objects.filter(x=>x.kind!=='mine').map(x=>x.at);}
@@ -52,24 +52,25 @@ export function explode(g:Arena,at:Hex,center:number,ring:number,owner:string,ki
 type Chain={source:string|null;used:Set<string>;count:number};
 function entered(g:Arena,p:Fighter,chain:Chain):boolean{
  if(!p.position)return false;for(const mine of [...g.objects])if(mine.kind==='mine'&&p.position&&equal(mine.at,p.position))damageObject(g,mine,mine.hp,mine.owner||p.id);
- if(!p.position)return true;const trap=g.springs.find(t=>equal(t.at,p.position!));if(trap&&!chain.used.has(trap.id)&&chain.count<C.chainLimit){chain.used.add(trap.id);chain.count++;visual(g,'spring',trap.at);interrupt(p);chain.source ||= trap.owner;push(g,p,trap.direction,2,chain);return true;}
- const i=g.boxes.findIndex(at=>p.position&&equal(at,p.position));if(i>=0){g.boxes.splice(i,1);p.hp=Math.min(CHARACTERS[p.character].hp,p.hp+20);p.energy=Math.min(C.maxEnergy,p.energy+2);p.coins++;log(g,`${p.name}拾取盲盒`);}return false;
+ if(!p.position)return true;const trap=g.springs.find(t=>equal(t.at,p.position!));if(trap&&!chain.used.has(trap.id)&&chain.count<C.chainLimit){chain.used.add(trap.id);chain.count++;visual(g,'spring',trap.at);interrupt(p,g,'被弹簧打断');chain.source ||= trap.owner;push(g,p,trap.direction,2,chain);return true;}
+ const i=g.boxes.findIndex(at=>p.position&&equal(at,p.position));if(i>=0){g.boxes.splice(i,1);p.hp=Math.min(CHARACTERS[p.character].hp,p.hp+C.appleHp);p.energy=Math.min(C.maxEnergy,p.energy+C.appleEnergy);visual(g,'apple',p.position!);log(g,`${p.name}拾取附魔金苹果：+30 HP / +4能量`);}return false;
 }
 export function push(g:Arena,p:Fighter,direction:number,steps:number,chain:Chain={source:null,used:new Set(),count:0}){
  for(let n=0;n<steps&&p.position;n++){const line:Fighter[]=[];let current:Fighter|undefined=p,blocked=false;
  while(current?.position){if(line.includes(current)){blocked=true;break;}line.push(current);const next=add(current.position,DIRS[direction]);if(solid(g,next)||(hasFloor(g.map,next)&&elevation(g.map,next)-elevation(g.map,current.position)>C.maxStep)){blocked=true;break;}current=hasFloor(g.map,next)?occupant(g,next):undefined;}if(blocked)break;
- for(const moved of [...line].reverse()){interrupt(moved);const next=add(moved.position!,DIRS[direction]);if(moved.motion?.at!==g.now)moved.motion={at:g.now,path:[{...moved.position!}]};moved.motion.path.push(next);credit(g,moved,chain.source);if(!hasFloor(g.map,next))die(g,moved,chain.source||(g.now-moved.lastHit<C.assistMs?moved.lastAttacker:null));else moved.position=next;}
+ for(const moved of [...line].reverse()){interrupt(moved,g,'被击退打断');const next=add(moved.position!,DIRS[direction]);if(moved.motion?.at!==g.now)moved.motion={at:g.now,path:[{...moved.position!}]};moved.motion.path.push(next);credit(g,moved,chain.source);if(!hasFloor(g.map,next))die(g,moved,chain.source||(g.now-moved.lastHit<C.assistMs?moved.lastAttacker:null));else moved.position=next;}
  let redirected=false;for(const moved of [...line].reverse())if(entered(g,moved,chain)&&moved.id===p.id)redirected=true;if(redirected)break;}
 }
 export function colliders(g:Arena,owner:string):Collider[]{return[
  ...g.map.floors.map(at=>({id:'floor:'+key(at),kind:'terrain' as const,at,bottom:-100,top:elevation(g.map,at)})),
  ...g.objects.filter(o=>o.kind!=='mine').map(o=>({id:o.id,kind:'object' as const,at:o.at,bottom:elevation(g.map,o.at),top:elevation(g.map,o.at)+o.height})),
  ...g.players.filter(p=>p.position&&p.id!==owner).map(p=>({id:p.id,kind:'player' as const,at:p.position!,radius:C.bodyRadius,bottom:elevation(g.map,p.position!),top:elevation(g.map,p.position!)+C.bodyHeight}))];}
-export function arrowOptions(g:Arena,p:Fighter,at:Hex){if(!p.position||!validHex(g,at)||distance(p.position,at)>SKILLS.arrow.range)return[];return trajectories({...world(p.position),z:elevation(g.map,p.position)+C.launchHeight},{...world(at),z:elevation(g.map,at)+.5});}
+export function arrowOptions(g:Arena,p:Fighter,at:Hex){if(!p.position||!validHex(g,at))return[];return trajectories({...world(p.position),z:elevation(g.map,p.position)+C.launchHeight},{...world(at),z:elevation(g.map,at)+.5});}
 export function unobstructed(g:Arena,p:Fighter,target:Fighter){if(!p.position||!target.position)return false;const a=world(p.position),b=world(target.position);const shot:Ballistic={origin:{...a,z:elevation(g.map,p.position)+.5},velocity:{x:b.x-a.x,y:b.y-a.y,z:elevation(g.map,target.position)-elevation(g.map,p.position)},gravity:0};return firstCollision(shot,colliders(g,p.id),0,1)?.collider.id===target.id;}
 export function autoIntent(g:Arena,p:Fighter,skill:SkillId):Intent|null{
+ if(p.position&&skill==='blink'){const enemies=g.players.filter(t=>t.id!==p.id&&t.position);const choices=g.map.floors.filter(h=>distance(p.position!,h)>=1&&distance(p.position!,h)<=SKILLS.blink.range&&free(g,h)&&!g.objects.some(o=>o.kind==='mine'&&equal(o.at,h))&&!g.springs.some(t=>equal(t.at,h))).map(h=>({h,safety:Math.min(99,...enemies.map(t=>distance(h,t.position!))),edges:DIRS.filter(d=>!hasFloor(g.map,add(h,d))).length})).sort((a,b)=>b.safety-a.safety||a.edges-b.edges);if(!choices.length)return null;const ties=choices.filter(c=>c.safety===choices[0].safety&&c.edges===choices[0].edges);return{skill,at:ties[Math.floor(random(g)*ties.length)].h};}
  if(!p.position||!['elbow','basic','hook','fireball','arrow','charge'].includes(skill))return null;
- const candidates=g.players.filter(t=>t.id!==p.id&&t.position&&distance(p.position!,t.position)<=SKILLS[skill].range).map(t=>({t,shot:undefined as Ballistic|undefined})).filter(c=>{
+ const candidates=g.players.filter(t=>t.id!==p.id&&t.position&&(skill==='arrow'||distance(p.position!,t.position)<=SKILLS[skill].range)).map(t=>({t,shot:undefined as Ballistic|undefined})).filter(c=>{
  if(skill==='hook')return unobstructed(g,p,c.t);
  if(skill==='charge')return DIRS.some(d=>[1,2,3].some(n=>equal(add(p.position!,scale(d,n)),c.t.position!)));
  if(skill==='arrow'){c.shot=arrowOptions(g,p,c.t.position!).find(s=>{const t=Math.hypot(world(c.t.position!).x-s.origin.x,world(c.t.position!).y-s.origin.y)/Math.hypot(s.velocity.x,s.velocity.y);return firstCollision(s,colliders(g,p.id),0,t+.01)?.collider.id===c.t.id;});return !!c.shot;}
@@ -95,7 +96,7 @@ function processBuffered(g:Arena){for(const p of g.players){const b=p.buffer;if(
  if(g.now>b.expires||(g.now<b.due&&p.action?.seq!==b.afterSeq)){cancelBuffered(g,p.id,'待施放技能过期或原前摇被打断');continue;}
  if(g.now>=b.due&&!p.action){p.buffer=null;const result=useHandCard(g,p.id,b.input);p.inputResult={seq:++g.seq,requestId:b.requestId,...result};}
 }}
-export function requestMovement(g:Arena,id:string,at:Hex){return startSkill(g,id,{skill:'move',at});}
+export function requestMovement(g:Arena,id:string,at:Hex,automatic=false){const r=startSkill(g,id,{skill:'move',at});const p=g.players.find(p=>p.id===id);if(r.ok&&p?.movement){p.movement.automatic=automatic;if(!automatic)p.navigation=null;}return r;}
 export function startSkill(g:Arena,id:string,intent:Intent):{ok:boolean;reason?:string}{
  const fail=(reason:string)=>({ok:false,reason}),p=g.players.find(p=>p.id===id);if(g.phase!=='playing'||!p?.position)return fail('比赛结束或角色正在复活');
  if(!intent||!Object.hasOwn(SKILLS,intent.skill))return fail('未知技能');if((p.moveRecoveryUntil||0)>g.now&&['elbow','basic','hook','arrow','fireball','charge'].includes(intent.skill))return fail('普通移动后摇中，请稍候或继续移动取消后摇');if(p.action)return fail('当前技能仍在前摇');if(p.stunnedUntil>g.now)return fail('正在击晕中');if(p.forced)return fail('正在强制位移');
@@ -103,7 +104,7 @@ export function startSkill(g:Arena,id:string,intent:Intent):{ok:boolean;reason?:
  const slot=intent.slot??p.hand.findIndex(c=>c.skill===intent.skill);if(intent.skill!=='move'&&(!Number.isInteger(slot)||slot<0||slot>3||p.hand[slot]?.skill!==intent.skill))return fail('此卡牌不在当前手牌中');if(p.energy+1e-9<skill.energyCost)return fail('能量不足');
  if(skill.targetType==='player'&&!g.players.some(t=>t.id===intent.targetId&&t.id!==id&&t.position)&&!(intent.skill!=='hook'&&g.objects.some(o=>o.id===intent.targetId)))return fail('目标不合法');
  if(skill.targetType==='cell'&&!validHex(g,intent.at))return fail('请选择有地板的目标格');
- if(intent.at&&skill.targetType==='cell'&&(distance(p.position,intent.at)>skill.range||distance(p.position,intent.at)<(intent.skill==='fireball'?0:1)))return fail('目标超出技能范围');
+ if(intent.at&&skill.targetType==='cell'&&((intent.skill!=='arrow'&&distance(p.position,intent.at)>skill.range)||distance(p.position,intent.at)<(intent.skill==='fireball'?0:1)))return fail('目标超出技能范围');
  if((skill.targetType==='direction'||intent.skill==='cover')&&(!Number.isInteger(intent.direction)||intent.direction!<0||intent.direction!>5))return fail('请选择六方向之一');
  if(intent.arc!==undefined&&!['low','high'].includes(intent.arc))return fail('弹道选择无效');
  if(intent.skill==='move'&&!canStep(g,p.position,intent.at!))return fail('目标有障碍或高度差超过0.5');
@@ -123,7 +124,7 @@ function resolve(g:Arena,p:Fighter,a:ActiveAction){
  }else if(a.skill==='charge'){p.movement={...a,start:g.now,end:g.now+C.chargeMs,from:{...p.position},path:[1,2,3].map(n=>add(p.position!,scale(DIRS[a.direction!],n))),step:0,carried:[]};success=true;
  }else if(a.skill==='fireball'&&g.projectiles.length<C.maxProjectiles&&at&&distance(p.position,at)<=4&&hasFloor(g.map,at)){
  const origin={...world(p.position),z:elevation(g.map,p.position)+.7},target={...world(at),z:elevation(g.map,at)},t=C.fireFlightMs/1000;g.projectiles.push({id:'fire'+a.seq,kind:'fireball',owner:p.id,start:g.now,end:g.now+C.fireFlightMs,at,from:{...p.position},origin,velocity:{x:(target.x-origin.x)/t,y:(target.y-origin.y)/t,z:(target.z-origin.z+C.gravity*t*t/2)/t}});success=true;
- }else if(a.skill==='arrow'&&g.projectiles.length<C.maxProjectiles&&a.shot&&at){g.projectiles.push({...a.shot,origin:{...world(p.position),z:elevation(g.map,p.position)+C.launchHeight},id:'arrow'+a.seq,kind:'arrow',owner:p.id,start:g.now,end:g.now+5000,at,from:{...p.position}});success=true;
+ }else if(a.skill==='arrow'&&g.projectiles.length<C.maxProjectiles&&at){const shots=arrowOptions(g,p,at),shot=shots[a.arc==='high'?shots.length-1:0];if(shot){g.projectiles.push({...shot,id:'arrow'+a.seq,kind:'arrow',owner:p.id,start:g.now,end:g.now+10000,at,from:{...p.position}});success=true;}
  }else if(a.skill==='cover'&&at&&distance(p.position,at)<=2){const cells=[add(at,DIRS[a.direction!]),at,add(at,DIRS[(a.direction!+3)%6])];if(g.objects.length+3<=C.maxObjects&&cells.every(h=>free(g,h)&&!g.springs.some(s=>equal(s.at,h))&&!g.objects.some(o=>equal(o.at,h)))){for(const h of cells){g.objects.push({id:'wall'+(++g.seq),kind:'cover',at:h,hp:SKILLS.cover.objectHp,maxHp:SKILLS.cover.objectHp,height:1,owner:p.id,created:g.now});visual(g,'build',h);}g.obstacles=g.objects.filter(o=>o.kind!=='mine').map(o=>o.at);success=true;}
  }else if(a.skill==='mine'&&at&&distance(p.position,at)<=2&&free(g,at)&&g.objects.length<C.maxObjects&&!g.objects.some(o=>equal(o.at,at))&&!g.springs.some(s=>equal(s.at,at))){g.objects.push({id:'mine'+a.seq,kind:'mine',at,hp:SKILLS.mine.objectHp,maxHp:SKILLS.mine.objectHp,height:.1,owner:p.id,created:g.now});success=true;
  }else if(a.skill==='hook'){const t=g.players.find(t=>t.id===a.targetId&&t.position);if(t?.position&&distance(p.position,t.position)<=3&&unobstructed(g,p,t)){visual(g,'hook',t.position,p.position);damage(g,t,5,p.id);if(t.position){stun(g,t,1000);const line=hexLine(t.position,p.position).slice(0,-1);t.forced={...a,from:{...t.position},path:line,start:g.now,end:g.now+C.hookMs,step:0};}success=true;}}
@@ -135,7 +136,9 @@ function movement(g:Arena){
  const candidates=g.players.filter(p=>p.position&&p.movement?.skill==='move'&&p.movement.step===0&&g.now>=p.movement.hitAt).sort((a,b)=>a.movement!.seq-b.movement!.seq),accepted=new Map<string,Hex>(),taken=new Set<string>();
  for(const p of candidates){const to=p.movement!.at!;if(canStep(g,p.position!,to)&&!taken.has(key(to))){accepted.set(p.id,to);taken.add(key(to));}}
  let changed=true;while(changed){changed=false;for(const [id,to]of accepted){const other=occupant(g,to);if(other&&!accepted.has(other.id)){accepted.delete(id);changed=true;}}}
- for(const p of candidates){const to=accepted.get(p.id);if(!to){p.movement=null;p.moveRecoveryUntil=g.now+C.moveRecoveryMs;log(g,`${p.name}移动受阻`);}else{p.previous=p.position;p.position={...to};p.movement!.step++;}}
+ for(const p of candidates){const to=accepted.get(p.id);if(!to){const a=p.movement!,other=occupant(g,a.at!);a.step++;a.blocked=true;a.path=[];log(g,`${p.name}移动受阻${other&&!a.automatic?'，碰撞造成5伤害':''}`);}else{p.previous=p.position;p.position={...to};p.movement!.step++;}}
+ // Finish simultaneous position assignments before damage can interrupt/death-clear another mover.
+ for(const p of candidates){const a=p.movement;if(a?.blocked&&!a.automatic&&p.position){const other=occupant(g,a.at!);if(other&&other.id!==p.id){damage(g,other,C.moveDamage,p.id);visual(g,'bump',other.position||a.at!);}}}
  for(const p of candidates)if(accepted.has(p.id))entered(g,p,{source:null,used:new Set(),count:0});
  for(const p of g.players){const a=p.movement;if(!p.position||!a)continue;if(a.skill==='charge'&&a.step<a.path.length&&g.now>=a.start+(a.end-a.start)*(a.step+.5)/a.path.length){const to=a.path[a.step];
  if(!hasFloor(g.map,to)){die(g,p,g.now-p.lastHit<C.assistMs?p.lastAttacker:null);continue;}if(!stepHeight(g.map,p.position,to)){finishCharge(g,p,a);continue;}const wall=solid(g,to);if(wall)damageObject(g,wall,SKILLS.charge.obstacleDamage,p.id);if(solid(g,to)){finishCharge(g,p,a);continue;}
@@ -160,8 +163,8 @@ export function stepArena(g:Arena){if(g.phase!=='playing')return;g.now+=C.tickMs
  // Cover decay uses elapsed authoritative time per cell; damage and aging share HP.
  for(const o of [...g.objects])if(o.kind==='cover'){const elapsed=g.now-(o.decayedAt??o.created);o.decayedAt=g.now;if(elapsed>0)damageObject(g,o,C.coverDecay*elapsed/1000,'environment');}
  for(const o of [...g.objects])if(o.kind==='mine'&&o.created<g.now)damageObject(g,o,C.mineDecay*C.tickMs/1000,o.owner||'environment');
- tickNavigation(g,requestMovement);
+ tickNavigation(g,(g,id,at)=>requestMovement(g,id,at,true));
  g.visuals=g.visuals.filter(v=>v.end>g.now).slice(-128);
  if(g.now>=g.nextResources){const cells=g.map.floors.filter(h=>free(g,h)&&!g.springs.some(s=>equal(s.at,h))&&!g.boxes.some(b=>equal(b,h))&&!(g.shop&&equal(g.shop,h)));if(g.boxes.length<4&&cells.length)g.boxes.push(cells[Math.floor(random(g)*cells.length)]);for(const p of g.players)p.coins=Math.min(12,p.coins+1);g.nextResources+=C.resourceMs;}
- if(g.now>=g.duration){g.phase='finished';for(const p of g.players){cancelBuffered(g,p.id,'比赛已结束');p.navigation=null;interrupt(p);}log(g,'比赛结束，击杀与助攻积分排名');}}
+ if(g.now>=g.duration){g.phase='finished';for(const p of g.players){cancelBuffered(g,p.id,'比赛已结束');p.navigation=null;interrupt(p,g,'因比赛结束打断');}log(g,'比赛结束，击杀与助攻积分排名');}}
 export function advanceArena(g:Arena,to:number){while(g.phase==='playing'&&g.now+C.tickMs<=to)stepArena(g);}

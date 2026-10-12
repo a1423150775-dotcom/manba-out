@@ -1,7 +1,7 @@
 import {spawn} from 'node:child_process';import {io} from 'socket.io-client';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
 const port=5192,url=`http://127.0.0.1:${port}/realtime`,server=spawn(process.execPath,['dist/server/index.js'],{env:{...process.env,PORT:String(port),NODE_ENV:'production'},stdio:'ignore'}),clients=[];
 const wait=async f=>{for(let i=0;i<250;i++){if(f())return;await new Promise(r=>setTimeout(r,30));}throw Error('timeout');},ack=(s,e,v={})=>new Promise((res,rej)=>s.timeout(5000).emit(e,v,(err,r)=>err?rej(err):res(r)));
-try{const a=io(url,{forceNew:true}),b=io(url,{forceNew:true});clients.push(a,b);let sa,sb;a.on('state',s=>sa=s);b.on('state',s=>sb=s);await wait(()=>a.connected&&b.connected);const room=await ack(a,'create',{mode:'multi'});assert.ok(room.ok);const guest=await ack(b,'join',{code:room.code});assert.ok(guest.ok);
+try{const a=io(url,{forceNew:true}),b=io(url,{forceNew:true});clients.push(a,b);let sa,sb;a.on('state',s=>sa=s);b.on('state',s=>sb=s);await wait(()=>a.connected&&b.connected);const room=await ack(a,'create',{mode:'multi'});assert.ok(room.ok);const guest=await ack(b,'join',{code:room.code});assert.ok(guest.ok);assert.equal((await ack(b,'slots',{op:'join',number:2})).ok,true);
  assert.equal((await ack(b,'map',{mapId:'abyss'})).ok,false);
  for(const mapId of ['abyss','factory','classic']){assert.equal((await ack(a,'map',{mapId})).ok,true);await wait(()=>sb.map.id===mapId);assert.deepEqual(sa.map,sb.map);}
  const custom=JSON.parse(readFileSync('maps-review/custom-map.json','utf8'));

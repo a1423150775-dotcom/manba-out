@@ -3,7 +3,7 @@ import type {ArenaMap} from './maps';
 const at=(q:number,r:number):Hex=>({q,r});
 // Mirror about world X=0 (axial q'=-q-r), preserving unequal upper/lower lanes.
 const mirror=(h:Hex)=>at(-h.q-h.r,h.r);
-const mobaFloors=board(7).filter(h=>Math.abs(h.q+h.r/2)<=6&&Math.abs(h.r)<=4).map(h=>{const x=Math.abs(h.q+h.r/2);let height=0;if(x<4.5){if(h.r<=-2)height=x>=3.5?.5:1;else if(h.r===-1)height=.5;else if(h.r>=3)height=x>=3.5?.5:1;else if(h.r===2)height=.5;}return{...h,height};});
+const mobaFloors=board(7).filter(h=>Math.abs(h.q+h.r/2)<=6&&Math.abs(h.r)<=4&&!(h.r===0&&Math.abs(h.q)===3)&&!(h.r===3&&(h.q===-1||h.q===-2))).map(h=>{const x=Math.abs(h.q+h.r/2);let height=0;if(x<4.5){if(h.r<=-2)height=x>=3.5?.5:1;else if(h.r===-1)height=.5;else if(h.r>=3)height=x>=3.5?.5:1;else if(h.r===2)height=.5;}if(h.r===-4&&(h.q===0||h.q===4))height=2;if(h.r===-3&&(h.q===-1||h.q===4))height=1.5;return{...h,height};});
 const blueSpawns=[at(-5,0),at(-5,1),at(-4,-1)];
 const blueTowers=[at(-3,-1),at(-4,2)];
 export const TEAM_MAPS:ArenaMap[]=[{

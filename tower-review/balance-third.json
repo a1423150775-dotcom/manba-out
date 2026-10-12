@@ -1,0 +1,934 @@
+{
+  "reports": [
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 9,
+      "actions": 963,
+      "towerShots": 277,
+      "towerHits": 270,
+      "towerDamage": 3886.5,
+      "destroyed": [
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 218450
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 366950
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 471600
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 320
+        },
+        {
+          "team": "red",
+          "hp": 380
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 8,
+      "actions": 953,
+      "towerShots": 279,
+      "towerHits": 271,
+      "towerDamage": 3866.5,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 170000
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 472450
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 534850
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 310
+        },
+        {
+          "team": "red",
+          "hp": 420
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 103,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 7,
+      "actions": 947,
+      "towerShots": 334,
+      "towerHits": 327,
+      "towerDamage": 4701.5,
+      "destroyed": [
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 388650
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 544300
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 380
+        },
+        {
+          "team": "red",
+          "hp": 350
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 24,
+      "actions": 1911,
+      "towerShots": 405,
+      "towerHits": 395,
+      "towerDamage": 5662.5,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 329000
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 344850
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 350
+        },
+        {
+          "team": "red",
+          "hp": 460
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 29,
+      "actions": 1894,
+      "towerShots": 418,
+      "towerHits": 407,
+      "towerDamage": 5846,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 244400
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 303300
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 397100
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 300
+        },
+        {
+          "team": "red",
+          "hp": 500
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 103,
+      "winner": "blue",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 13,
+      "actions": 1841,
+      "towerShots": 568,
+      "towerHits": 549,
+      "towerDamage": 7816,
+      "destroyed": [
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 426000
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 446700
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 500
+        },
+        {
+          "team": "red",
+          "hp": 480
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 45,
+      "actions": 2909,
+      "towerShots": 370,
+      "towerHits": 361,
+      "towerDamage": 5171,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 160250
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 240900
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 150
+        },
+        {
+          "team": "red",
+          "hp": 480
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 43,
+      "actions": 2829,
+      "towerShots": 587,
+      "towerHits": 568,
+      "towerDamage": 8131,
+      "destroyed": [
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 277400
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 453750
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 472350
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 440
+        },
+        {
+          "team": "red",
+          "hp": 490
+        }
+      ]
+    },
+    {
+      "mode": "moba",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 600,
+      "kills": 47,
+      "actions": 2884,
+      "towerShots": 406,
+      "towerHits": 393,
+      "towerDamage": 5627,
+      "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 241350
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 244600
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 257400
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 543450
+        }
+      ],
+      "pathFailures": 5,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "blue",
+          "hp": 350
+        },
+        {
+          "team": "red",
+          "hp": 460
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 5,
+      "actions": 481,
+      "towerShots": 33,
+      "towerHits": 32,
+      "towerDamage": 462.5,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 67650
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 118550
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 270
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 2,
+      "actions": 484,
+      "towerShots": 45,
+      "towerHits": 45,
+      "towerDamage": 653.5,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 51700
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 114200
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 290
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        1,
+        1
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 5,
+      "actions": 455,
+      "towerShots": 48,
+      "towerHits": 48,
+      "towerDamage": 686,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 83000
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 131150
+        }
+      ],
+      "pathFailures": 1,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 170
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 11,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 11,
+      "actions": 971,
+      "towerShots": 62,
+      "towerHits": 62,
+      "towerDamage": 884,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 76600
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 110350
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 260
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 8,
+      "actions": 986,
+      "towerShots": 54,
+      "towerHits": 54,
+      "towerDamage": 778,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 62300
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 95850
+        }
+      ],
+      "pathFailures": 0,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 280
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        2,
+        2
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 17,
+      "actions": 964,
+      "towerShots": 64,
+      "towerHits": 62,
+      "towerDamage": 915,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 81200
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 116400
+        }
+      ],
+      "pathFailures": 4,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 80
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 284.6,
+      "kills": 21,
+      "actions": 1365,
+      "towerShots": 39,
+      "towerHits": 39,
+      "towerDamage": 571,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 59550
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 59550
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 284600
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 42,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 20,
+      "actions": 1431,
+      "towerShots": 38,
+      "towerHits": 37,
+      "towerDamage": 532,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 41900
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 63400
+        }
+      ],
+      "pathFailures": 5,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 230
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        3
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 26,
+      "actions": 1425,
+      "towerShots": 25,
+      "towerHits": 25,
+      "towerDamage": 368,
+      "destroyed": [
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 43000
+        },
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 70350
+        }
+      ],
+      "pathFailures": 4,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 170
+        }
+      ]
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 11,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 209.2,
+      "kills": 13,
+      "actions": 834,
+      "towerShots": 24,
+      "towerHits": 24,
+      "towerDamage": 360,
+      "destroyed": [
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 36050
+        },
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 49400
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 209200
+        }
+      ],
+      "pathFailures": 4,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 42,
+      "winner": "blue",
+      "reason": "核心被摧毁",
+      "seconds": 239.3,
+      "kills": 12,
+      "actions": 946,
+      "towerShots": 49,
+      "towerHits": 49,
+      "towerDamage": 726.5,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 80100
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 80100
+        },
+        {
+          "id": "map:castle-core",
+          "kind": "core",
+          "at": 239300
+        }
+      ],
+      "pathFailures": 2,
+      "stationary30s": 0,
+      "cores": []
+    },
+    {
+      "mode": "siege",
+      "counts": [
+        3,
+        2
+      ],
+      "seed": 103,
+      "winner": "red",
+      "reason": "对局时间结束",
+      "seconds": 300,
+      "kills": 17,
+      "actions": 1198,
+      "towerShots": 42,
+      "towerHits": 40,
+      "towerDamage": 574.5,
+      "destroyed": [
+        {
+          "id": "map:castle-gate",
+          "kind": "gate",
+          "at": 64950
+        },
+        {
+          "id": "map:castle-tower",
+          "kind": "tower",
+          "at": 64950
+        }
+      ],
+      "pathFailures": 1,
+      "stationary30s": 0,
+      "cores": [
+        {
+          "team": "red",
+          "hp": 20
+        }
+      ]
+    }
+  ],
+  "travel": [
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "center",
+      "steps": 5,
+      "minMoveSeconds": 5,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "core",
+      "steps": 10,
+      "minMoveSeconds": 10,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "blue",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "center",
+      "steps": 5,
+      "minMoveSeconds": 5,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "core",
+      "steps": 10,
+      "minMoveSeconds": 10,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "moba",
+      "team": "red",
+      "target": "tower",
+      "steps": 8,
+      "minMoveSeconds": 8,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "center",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "core",
+      "steps": 9,
+      "minMoveSeconds": 9,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "gate",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "blue",
+      "target": "tower",
+      "steps": 3,
+      "minMoveSeconds": 3,
+      "includesCombat": false
+    },
+    {
+      "mode": "siege",
+      "team": "red",
+      "target": "center",
+      "steps": 6,
+      "minMoveSeconds": 6,
+      "includesCombat": false
+    }
+  ],
+  "elapsedMs": 29984.3567,
+  "note": "21 seeded accelerated normal-Bot matches; stationary30s is observation, not proof of a pathfinding deadlock. No real-device balance claim."
+}

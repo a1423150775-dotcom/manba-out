@@ -4,13 +4,13 @@
       "mode": "moba",
       "actualBrowser": "human+3Bots+independent observer;2D/2.5D/full/follow/mobile;30second match completed",
       "metrics": {
-        "towerShots": 30,
-        "towerHits": 29,
-        "towerDamage": 430,
+        "towerShots": 43,
+        "towerHits": 41,
+        "towerDamage": 596.5,
         "destroyed": [],
         "pathFailures": 0
       },
-      "winner": "draw"
+      "winner": "blue"
     },
     {
       "mode": "siege",

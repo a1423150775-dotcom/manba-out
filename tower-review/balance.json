@@ -7,29 +7,24 @@
         1
       ],
       "seed": 11,
-      "winner": "red",
+      "winner": "blue",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 9,
-      "actions": 963,
-      "towerShots": 277,
-      "towerHits": 270,
-      "towerDamage": 3886.5,
+      "kills": 6,
+      "actions": 932,
+      "towerShots": 303,
+      "towerHits": 294,
+      "towerDamage": 4182,
       "destroyed": [
         {
           "id": "map:red-tower-0",
           "kind": "tower",
-          "at": 218450
+          "at": 255750
         },
         {
-          "id": "map:blue-tower-0",
+          "id": "map:red-tower-1",
           "kind": "tower",
-          "at": 366950
-        },
-        {
-          "id": "map:blue-tower-1",
-          "kind": "tower",
-          "at": 471600
+          "at": 446200
         }
       ],
       "pathFailures": 0,
@@ -37,11 +32,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 320
+          "hp": 400
         },
         {
           "team": "red",
-          "hp": 380
+          "hp": 330
         }
       ]
     },
@@ -55,26 +50,21 @@
       "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 8,
-      "actions": 953,
-      "towerShots": 279,
-      "towerHits": 271,
-      "towerDamage": 3866.5,
+      "kills": 12,
+      "actions": 946,
+      "towerShots": 226,
+      "towerHits": 224,
+      "towerDamage": 3220.5,
       "destroyed": [
         {
           "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 170000
+          "at": 176300
         },
         {
           "id": "map:blue-tower-1",
           "kind": "tower",
-          "at": 472450
-        },
-        {
-          "id": "map:red-tower-0",
-          "kind": "tower",
-          "at": 534850
+          "at": 391400
         }
       ],
       "pathFailures": 0,
@@ -82,11 +72,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 310
+          "hp": 360
         },
         {
           "team": "red",
-          "hp": 420
+          "hp": 460
         }
       ]
     },
@@ -97,24 +87,34 @@
         1
       ],
       "seed": 103,
-      "winner": "blue",
+      "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 7,
-      "actions": 947,
-      "towerShots": 334,
-      "towerHits": 327,
-      "towerDamage": 4701.5,
+      "kills": 10,
+      "actions": 968,
+      "towerShots": 232,
+      "towerHits": 222,
+      "towerDamage": 3183.5,
       "destroyed": [
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 257250
+        },
         {
           "id": "map:red-tower-0",
           "kind": "tower",
-          "at": 388650
+          "at": 343750
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 444350
         },
         {
           "id": "map:red-tower-1",
           "kind": "tower",
-          "at": 544300
+          "at": 561800
         }
       ],
       "pathFailures": 0,
@@ -122,11 +122,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 380
+          "hp": 320
         },
         {
           "team": "red",
-          "hp": 350
+          "hp": 430
         }
       ]
     },
@@ -141,20 +141,25 @@
       "reason": "对局时间结束",
       "seconds": 600,
       "kills": 24,
-      "actions": 1911,
-      "towerShots": 405,
-      "towerHits": 395,
-      "towerDamage": 5662.5,
+      "actions": 1863,
+      "towerShots": 463,
+      "towerHits": 448,
+      "towerDamage": 6430,
       "destroyed": [
         {
           "id": "map:blue-tower-1",
           "kind": "tower",
-          "at": 329000
+          "at": 222950
+        },
+        {
+          "id": "map:red-tower-0",
+          "kind": "tower",
+          "at": 501050
         },
         {
           "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 344850
+          "at": 510600
         }
       ],
       "pathFailures": 0,
@@ -162,11 +167,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 350
+          "hp": 430
         },
         {
           "team": "red",
-          "hp": 460
+          "hp": 480
         }
       ]
     },
@@ -177,29 +182,29 @@
         2
       ],
       "seed": 42,
-      "winner": "red",
+      "winner": "blue",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 29,
-      "actions": 1894,
-      "towerShots": 418,
-      "towerHits": 407,
-      "towerDamage": 5846,
+      "kills": 21,
+      "actions": 1900,
+      "towerShots": 458,
+      "towerHits": 441,
+      "towerDamage": 6299,
       "destroyed": [
-        {
-          "id": "map:blue-tower-1",
-          "kind": "tower",
-          "at": 244400
-        },
         {
           "id": "map:red-tower-0",
           "kind": "tower",
-          "at": 303300
+          "at": 351050
+        },
+        {
+          "id": "map:red-tower-1",
+          "kind": "tower",
+          "at": 410150
         },
         {
           "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 397100
+          "at": 570600
         }
       ],
       "pathFailures": 0,
@@ -207,11 +212,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 300
+          "hp": 500
         },
         {
           "team": "red",
-          "hp": 500
+          "hp": 360
         }
       ]
     },
@@ -222,24 +227,29 @@
         2
       ],
       "seed": 103,
-      "winner": "blue",
+      "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 13,
-      "actions": 1841,
-      "towerShots": 568,
-      "towerHits": 549,
-      "towerDamage": 7816,
+      "kills": 27,
+      "actions": 1932,
+      "towerShots": 353,
+      "towerHits": 339,
+      "towerDamage": 4818.5,
       "destroyed": [
         {
           "id": "map:red-tower-0",
           "kind": "tower",
-          "at": 426000
+          "at": 177850
         },
         {
           "id": "map:blue-tower-1",
           "kind": "tower",
-          "at": 446700
+          "at": 239350
+        },
+        {
+          "id": "map:blue-tower-0",
+          "kind": "tower",
+          "at": 278500
         }
       ],
       "pathFailures": 0,
@@ -247,11 +257,11 @@
       "cores": [
         {
           "team": "blue",
-          "hp": 500
+          "hp": 190
         },
         {
           "team": "red",
-          "hp": 480
+          "hp": 430
         }
       ]
     },
@@ -265,33 +275,33 @@
       "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 45,
-      "actions": 2909,
-      "towerShots": 370,
-      "towerHits": 361,
-      "towerDamage": 5171,
+      "kills": 46,
+      "actions": 2854,
+      "towerShots": 418,
+      "towerHits": 405,
+      "towerDamage": 5799,
       "destroyed": [
         {
           "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 160250
+          "at": 214050
         },
         {
           "id": "map:blue-tower-1",
           "kind": "tower",
-          "at": 240900
+          "at": 256650
         }
       ],
-      "pathFailures": 2,
+      "pathFailures": 0,
       "stationary30s": 0,
       "cores": [
         {
           "team": "blue",
-          "hp": 150
+          "hp": 240
         },
         {
           "team": "red",
-          "hp": 480
+          "hp": 500
         }
       ]
     },
@@ -305,38 +315,33 @@
       "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 43,
-      "actions": 2829,
-      "towerShots": 587,
-      "towerHits": 568,
-      "towerDamage": 8131,
+      "kills": 38,
+      "actions": 2927,
+      "towerShots": 338,
+      "towerHits": 324,
+      "towerDamage": 4634.5,
       "destroyed": [
-        {
-          "id": "map:red-tower-0",
-          "kind": "tower",
-          "at": 277400
-        },
         {
           "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 453750
+          "at": 281500
         },
         {
-          "id": "map:red-tower-1",
+          "id": "map:blue-tower-1",
           "kind": "tower",
-          "at": 472350
+          "at": 301300
         }
       ],
-      "pathFailures": 0,
+      "pathFailures": 2,
       "stationary30s": 0,
       "cores": [
         {
           "team": "blue",
-          "hp": 440
+          "hp": 100
         },
         {
           "team": "red",
-          "hp": 490
+          "hp": 480
         }
       ]
     },
@@ -350,43 +355,43 @@
       "winner": "red",
       "reason": "对局时间结束",
       "seconds": 600,
-      "kills": 47,
-      "actions": 2884,
-      "towerShots": 406,
-      "towerHits": 393,
-      "towerDamage": 5627,
+      "kills": 50,
+      "actions": 2872,
+      "towerShots": 373,
+      "towerHits": 362,
+      "towerDamage": 5179.5,
       "destroyed": [
-        {
-          "id": "map:blue-tower-0",
-          "kind": "tower",
-          "at": 241350
-        },
         {
           "id": "map:red-tower-0",
           "kind": "tower",
-          "at": 244600
+          "at": 257550
         },
         {
-          "id": "map:blue-tower-1",
+          "id": "map:blue-tower-0",
           "kind": "tower",
-          "at": 257400
+          "at": 260950
         },
         {
           "id": "map:red-tower-1",
           "kind": "tower",
-          "at": 543450
+          "at": 318550
+        },
+        {
+          "id": "map:blue-tower-1",
+          "kind": "tower",
+          "at": 365850
         }
       ],
-      "pathFailures": 5,
+      "pathFailures": 4,
       "stationary30s": 0,
       "cores": [
         {
           "team": "blue",
-          "hp": 350
+          "hp": 270
         },
         {
           "team": "red",
-          "hp": 460
+          "hp": 380
         }
       ]
     },
@@ -828,24 +833,24 @@
       "mode": "moba",
       "team": "blue",
       "target": "center",
-      "steps": 5,
-      "minMoveSeconds": 5,
+      "steps": 6,
+      "minMoveSeconds": 6,
       "includesCombat": false
     },
     {
       "mode": "moba",
       "team": "blue",
       "target": "core",
-      "steps": 10,
-      "minMoveSeconds": 10,
+      "steps": 11,
+      "minMoveSeconds": 11,
       "includesCombat": false
     },
     {
       "mode": "moba",
       "team": "blue",
       "target": "tower",
-      "steps": 8,
-      "minMoveSeconds": 8,
+      "steps": 9,
+      "minMoveSeconds": 9,
       "includesCombat": false
     },
     {
@@ -860,24 +865,24 @@
       "mode": "moba",
       "team": "red",
       "target": "center",
-      "steps": 5,
-      "minMoveSeconds": 5,
+      "steps": 6,
+      "minMoveSeconds": 6,
       "includesCombat": false
     },
     {
       "mode": "moba",
       "team": "red",
       "target": "core",
-      "steps": 10,
-      "minMoveSeconds": 10,
+      "steps": 11,
+      "minMoveSeconds": 11,
       "includesCombat": false
     },
     {
       "mode": "moba",
       "team": "red",
       "target": "tower",
-      "steps": 8,
-      "minMoveSeconds": 8,
+      "steps": 9,
+      "minMoveSeconds": 9,
       "includesCombat": false
     },
     {
@@ -929,6 +934,6 @@
       "includesCombat": false
     }
   ],
-  "elapsedMs": 29984.3567,
+  "elapsedMs": 34182.172,
   "note": "21 seeded accelerated normal-Bot matches; stationary30s is observation, not proof of a pathfinding deadlock. No real-device balance claim."
 }
